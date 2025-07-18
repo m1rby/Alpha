@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlphaYOU</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --main-bg-dark: linear-gradient(135deg, #fbeff2 0%, #f7e6f7 100%);
+      --main-bg-light: linear-gradient(135deg, #fff0f6 0%, #ffe3e3 100%);
+      --card-bg-dark: rgba(255, 255, 255, 0.92);
+      --card-bg-light: rgba(255,255,255,0.98);
+      --text-main-dark: #3a2c3a;
+      --text-main-light: #3a2c3a;
+      --text-secondary-dark: #b48ca7;
+      --text-secondary-light: #b48ca7;
+      --accent: #ff6f91;
+      --accent2: #ffb6b9;
+      --button-bg: #fff0f6;
+      --button-bg-dark: #ffe3e3;
+      --button-bg-light: #fff0f6;
+      --button-radius: 50%;
+      --shadow: 0 4px 24px 0 rgba(255,182,185,0.13);
+    }
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      min-width: 100vw;
+      min-height: 100vh;
+      max-width: 100vw;
+      max-height: 100vh;
+      overflow: hidden !important;
+      position: fixed;
+      top: 0; left: 0;
+      margin: 0; padding: 0;
+    }
+    body[data-theme="dark"], body {
+      background: var(--main-bg-dark);
+      color: var(--text-main-dark);
+    }
+    body[data-theme="light"] {
+      background: var(--main-bg-light);
+      color: var(--text-main-light);
+    }
+    .app-container {
+      width: 100vw;
+      height: 100vh;
+      min-width: 100vw;
+      min-height: 100vh;
+      max-width: 100vw;
+      max-height: 100vh;
+      overflow: hidden;
+      position: fixed;
+      top: 0; left: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+    .background-photo, .bg-overlay, .theme-toggle { display: none !important; }
+    .screen {
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      top: 0; left: 0;
+      transition: transform 0.5s cubic-bezier(.77,0,.18,1);
+      will-change: transform;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 2;
+    }
+    .screen-main {
+      z-index: 2;
+      justify-content: center;
+      pointer-events: auto;
+    }
+    .screen-feed {
+      z-index: 1;
+      transform: translateY(100%);
+      background: transparent;
+      pointer-events: none;
+      transition: transform 0.5s cubic-bezier(.77,0,.18,1);
+    }
+    .screen-main {
+      z-index: 2;
+      transition: transform 0.5s cubic-bezier(.77,0,.18,1);
+    }
+    .screen.active {
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .screen.inactive {
+      transform: translateY(0);
+      pointer-events: none;
+    }
+    .screen-main.inactive {
+      transform: translateY(-100%);
+    }
+    .screen-feed.active {
+      transform: translateY(0);
+    }
+    .screen-feed.inactive {
+      transform: translateY(100%);
+    }
+    .main-card {
+      margin-top: 0;
+      margin-bottom: 0;
+      background: rgba(30, 34, 54, 0.92);
+      border-radius: 28px;
+      box-shadow: 0 4px 32px 0 rgba(0,0,0,0.18);
+      padding: 36px 18px 28px 18px;
+      min-width: 80vw;
+      max-width: 370px;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      backdrop-filter: blur(4px);
+      transition: background 0.4s;
+      position: relative;
+    }
+    body[data-theme="light"] .main-card {
+      background: var(--card-bg-light);
+      color: var(--text-main-light);
+    }
+    .main-label {
+      color: var(--accent);
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+    body[data-theme="light"] .main-label {
+      color: var(--text-secondary-light);
+    }
+    .main-balance {
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      color: #e94f7c;
+      text-shadow: 0 2px 8px #ffd6e0;
+    }
+    body[data-theme="light"] .main-balance {
+      color: #181c2e;
+      text-shadow: none;
+    }
+    .main-currency {
+      font-size: 1.1rem;
+      color: #00e0d3;
+      font-weight: 500;
+      margin-bottom: 18px;
+    }
+    .main-actions {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 18px;
+      margin-top: 18px;
+    }
+    .main-action-btn {
+      width: 54px;
+      height: 54px;
+      background: var(--accent2);
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px 0 #ffd6e0;
+      font-size: 1.5rem;
+      color: #e94f7c;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      outline: none;
+    }
+    .main-action-btn:active {
+      background: var(--accent);
+      color: #fff;
+      transform: scale(0.96);
+    }
+    body[data-theme="light"] .main-action-btn {
+      background: #fff;
+      color: #23284a;
+      border: 1.5px solid #e0e0e0;
+    }
+    .main-action-btn svg {
+      width: 28px; height: 28px;
+    }
+    .swipe-hint {
+      position: absolute;
+      left: 50%;
+      bottom: 32px;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0.85;
+      z-index: 10;
+      pointer-events: none;
+      animation: fadein 1.2s;
+    }
+    .swipe-hint-arrow {
+      width: 36px;
+      height: 36px;
+      margin-bottom: 0;
+      animation: bounce 1.2s infinite;
+    }
+    .swipe-hint-text {
+      color: #b0b8d1;
+      font-size: 1.05rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      opacity: 0.85;
+      animation: fadein 2s;
+    }
+    .balance-card {
+      margin: 32px 8px 0 8px;
+      background: var(--card-bg);
+      border-radius: 24px;
+      box-shadow: 0 2px 12px 0 rgba(108,71,255,0.10);
+      padding: 28px 12px 18px 12px;
+      text-align: center;
+      position: relative;
+      width: 95vw;
+      max-width: 370px;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .balance-label {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+    .balance-amount {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+      line-height: 1.1;
+    }
+    .balance-currency {
+      font-size: 1.05rem;
+      color: var(--accent2);
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    .actions {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      width: 100%;
+      gap: 12px;
+      margin: 18px 0 0 0;
+    }
+    .action-btn {
+      flex: 1 1 0;
+      background: var(--button-bg);
+      color: #fff;
+      border: none;
+      border-radius: var(--button-radius);
+      font-size: 1.15rem;
+      font-weight: 600;
+      padding: 15px 0;
+      margin: 0;
+      box-shadow: 0 2px 8px 0 rgba(108,71,255,0.10);
+      transition: background 0.2s, transform 0.1s;
+      cursor: pointer;
+      min-width: 0;
+    }
+    .action-btn.receive {
+      background: var(--button-bg2);
+      color: #181c2e;
+    }
+    .action-btn:active {
+      filter: brightness(0.95);
+      transform: scale(0.97);
+    }
+    .arrow-down {
+      position: absolute;
+      left: 50%;
+      bottom: -28px;
+      transform: translateX(-50%);
+      animation: bounce 1.2s infinite;
+      opacity: 0.85;
+      z-index: 10;
+      background: rgba(44, 52, 90, 0.85);
+      border-radius: 50%;
+      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .arrow-svg {
+      width: 32px;
+      height: 32px;
+      display: block;
+    }
+    /* Feed styles */
+    .feed-container {
+      padding: 24px 0 0 0;
+      max-height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background: transparent;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 2;
+    }
+    .feed-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin: 0 0 18px 0;
+      color: #e94f7c;
+      text-align: center;
+      width: 100%;
+      letter-spacing: 0.01em;
+      text-shadow: 0 2px 8px #ffd6e0;
+    }
+    .feed-list {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      padding: 0 0 32px 0;
+      width: 95vw;
+      max-width: 370px;
+    }
+    .feed-item {
+      background: linear-gradient(135deg, #ffe3e3 0%, #ffd6e0 100%);
+      border-radius: 22px;
+      box-shadow: 0 4px 24px 0 #ffd6e0, 0 1.5px 8px 0 #ffb6b9;
+      padding: 22px 18px 18px 18px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 18px;
+      position: relative;
+      min-height: 90px;
+      transition: box-shadow 0.2s, transform 0.2s;
+      overflow: hidden;
+    }
+    .feed-item:hover {
+      box-shadow: 0 8px 32px 0 #ffd6e0, 0 2.5px 16px 0 #ffb6b9;
+      transform: translateY(-2px) scale(1.01);
+    }
+    .feed-item-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #fff0f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 8px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px 0 #ffd6e0;
+    }
+    .feed-item-icon svg {
+      width: 28px;
+      height: 28px;
+      color: #e94f7c;
+    }
+    .feed-item-title {
+      font-size: 1.13rem;
+      font-weight: 700;
+      color: #e94f7c;
+      margin-bottom: 2px;
+    }
+    .feed-item-desc {
+      color: #b48ca7;
+      font-size: 1.01rem;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+    .feed-item-action {
+      margin-left: auto;
+      background: #fff0f6;
+      color: #e94f7c;
+      border: none;
+      border-radius: 14px;
+      padding: 10px 22px;
+      font-size: 1.01rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 8px 0 #ffd6e0;
+      transition: background 0.2s, color 0.2s, transform 0.1s;
+    }
+    .feed-item-action:active {
+      background: var(--accent);
+      color: #fff;
+      transform: scale(0.97);
+    }
+    .feed-container::-webkit-scrollbar {
+      width: 0.5em;
+      background: transparent;
+    }
+    .feed-container::-webkit-scrollbar-thumb {
+      background: #23284a;
+      border-radius: 8px;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(12px); }
+    }
+    @keyframes fadein {
+      from { opacity: 0; }
+      to { opacity: 0.85; }
+    }
+    /* Last purchase card (dark theme) */
+    .last-purchase-card {
+      margin-top: 32px;
+      background: linear-gradient(135deg, #ffe3e3 0%, #ffd6e0 100%);
+      border-radius: 18px;
+      box-shadow: 0 2px 12px 0 #ffd6e0;
+      padding: 16px 18px 14px 14px;
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      max-width: 340px;
+      width: 90vw;
+      gap: 14px;
+    }
+    .last-purchase-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #fff0f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .last-purchase-icon svg {
+      width: 24px;
+      height: 24px;
+      color: #e94f7c;
+      display: block;
+    }
+    .last-purchase-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .last-purchase-title {
+      font-size: 1.08rem;
+      font-weight: 600;
+      color: #e94f7c;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .last-purchase-time {
+      font-size: 0.98rem;
+      color: #b48ca7;
+      font-weight: 500;
+    }
+    .last-purchase-amount {
+      font-size: 1.13rem;
+      font-weight: 600;
+      color: #e94f7c;
+      margin-left: 12px;
+      white-space: nowrap;
+    }
+    /* Swipe account arrows */
+    .account-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      background: rgba(44,52,90,0.7);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      cursor: pointer;
+      opacity: 0.85;
+      transition: background 0.2s, opacity 0.2s;
+      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+      pointer-events: none;
+    }
+    .account-arrow-left { left: -18px; }
+    .account-arrow-right { right: -18px; }
+    .account-arrow svg { width: 22px; height: 22px; }
+    .account-swipe-hint {
+      margin-top: 12px;
+      color: var(--accent);
+      font-size: 1.01rem;
+      font-weight: 600;
+      text-align: center;
+      opacity: 0.8;
+      letter-spacing: 0.01em;
+      animation: swipehint 1.8s infinite alternate;
+      user-select: none;
+      pointer-events: none;
+      text-shadow: 0 2px 8px #fff0f6;
+    }
+    @keyframes swipehint {
+      from { opacity: 0.5; transform: translateY(0); }
+      to { opacity: 1; transform: translateY(6px); }
+    }
+    /* Account carousel */
+    .accounts-carousel {
+      position: relative;
+      width: 100vw;
+      max-width: 430px;
+      height: 290px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+      margin-bottom: 0;
+      margin-top: 0;
+      z-index: 2;
+    }
+    .account-card {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%) scale(1);
+      width: 88vw;
+      max-width: 370px;
+      min-width: 260px;
+      min-height: 180px;
+      flex-shrink: 0;
+      background: var(--card-bg-dark);
+      border-radius: 32px;
+      box-shadow: 0 8px 32px 0 rgba(255,182,185,0.13), 0 1.5px 8px 0 rgba(255,111,145,0.08);
+      padding: 36px 18px 28px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      backdrop-filter: blur(4px);
+      transition: transform 0.45s cubic-bezier(.77,0,.18,1), opacity 0.35s, filter 0.35s;
+      will-change: transform, opacity;
+      z-index: 2;
+      opacity: 1;
+      box-shadow: 0 8px 32px 0 rgba(255,182,185,0.13), 0 1.5px 8px 0 rgba(255,111,145,0.08);
+    }
+    .account-card.left {
+      left: 0;
+      transform: translateX(-90%) scale(0.88) rotateY(10deg);
+      opacity: 0.32;
+      z-index: 1;
+      filter: blur(2.5px) grayscale(0.25);
+      pointer-events: none;
+      transition: transform 0.7s cubic-bezier(.77,0,.18,1), opacity 0.7s, filter 0.7s;
+    }
+    .account-card.right {
+      left: auto;
+      right: 0;
+      transform: translateX(90%) scale(0.88) rotateY(-10deg);
+      opacity: 0.32;
+      z-index: 1;
+      filter: blur(2.5px) grayscale(0.25);
+      pointer-events: none;
+      transition: transform 0.7s cubic-bezier(.77,0,.18,1), opacity 0.7s, filter 0.7s;
+    }
+    .account-card.center {
+      left: 50%;
+      right: auto;
+      transform: translateX(-50%) scale(1);
+      opacity: 1;
+      z-index: 2;
+      filter: none;
+      animation: fadeInCenter 0.7s cubic-bezier(.77,0,.18,1);
+      transition: transform 0.7s cubic-bezier(.77,0,.18,1), opacity 0.7s, filter 0.7s;
+    }
+   
+    .account-card.fadeOutLeft {
+      animation: fadeOutLeft 0.7s cubic-bezier(.77,0,.18,1);
+    }
+    .account-card.fadeOutRight {
+      animation: fadeOutRight 0.7s cubic-bezier(.77,0,.18,1);
+    }
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-140%) scale(0.88) rotateY(10deg); }
+      to { opacity: 1; transform: translateX(-50%) scale(1); }
+    }
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(140%) scale(0.88) rotateY(-10deg); }
+      to { opacity: 1; transform: translateX(-50%) scale(1); }
+    }
+    @keyframes fadeOutLeft {
+      from { opacity: 1; transform: translateX(-50%) scale(1); }
+      to { opacity: 0; transform: translateX(-140%) scale(0.88) rotateY(10deg); }
+    }
+    @keyframes fadeOutRight {
+      from { opacity: 1; transform: translateX(-50%) scale(1); }
+      to { opacity: 0; transform: translateX(140%) scale(0.88) rotateY(-10deg); }
+    }
+    @keyframes fadeInCenter {
+      from { opacity: 0.5; transform: translateX(-50%) scale(0.96); }
+      to { opacity: 1; transform: translateX(-50%) scale(1); }
+    }
+    .accounts-dots {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 120px;
+      margin-bottom: 0;
+      position: relative;
+      z-index: 20;
+    }
+    .accounts-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ffd6e0;
+      opacity: 0.5;
+      transition: background 0.2s, opacity 0.2s;
+    }
+    .accounts-dot.active {
+      background: var(--accent);
+      opacity: 1;
+      box-shadow: 0 0 8px 2px var(--accent2);
+    }
+    .account-swipe-hint {
+      margin-top: 8px;
+      color: var(--accent);
+      font-size: 1.01rem;
+      font-weight: 600;
+      text-align: center;
+      opacity: 0.8;
+      letter-spacing: 0.01em;
+      animation: swipehint 1.8s infinite alternate;
+      user-select: none;
+      pointer-events: none;
+      text-shadow: 0 2px 8px #fff0f6;
+      position: relative;
+      z-index: 20;
+    }
+    @keyframes swipehint {
+      from { opacity: 0.5; transform: translateY(0); }
+      to { opacity: 1; transform: translateY(6px); }
+    }
+    /* Profile button */
+    .profile-btn {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 50;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffb6b9 0%, #ff6f91 100%);
+      box-shadow: 0 2px 8px 0 #ffd6e0;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: box-shadow 0.2s, background 0.2s;
+      outline: none;
+    }
+    .profile-btn:active {
+      box-shadow: 0 4px 16px 0 #ffb6b9;
+      background: linear-gradient(135deg, #ff6f91 0%, #ffb6b9 100%);
+    }
+    .profile-btn svg {
+      width: 28px;
+      height: 28px;
+      color: #fff;
+    }
+    /* Profile screen */
+    .profile-screen {
+      position: fixed;
+      top: 0; right: 0;
+      width: 100vw;
+      max-width: 430px;
+      height: 100vh;
+      background: linear-gradient(135deg, #fff0f6 0%, #ffe3e3 100%);
+      z-index: 100;
+      box-shadow: -8px 0 32px 0 #ffd6e0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      transform: translateX(100%);
+      transition: transform 0.5s cubic-bezier(.77,0,.18,1);
+    }
+    .profile-screen.active {
+      transform: translateX(0);
+    }
+    .profile-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      background: #fff0f6;
+      border: none;
+      border-radius: 50%;
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 8px 0 #ffd6e0;
+      cursor: pointer;
+      z-index: 110;
+      font-size: 1.5rem;
+      color: #e94f7c;
+      transition: background 0.2s;
+    }
+    .profile-close:active { background: #ffd6e0; }
+    .profile-avatar {
+      margin-top: 64px;
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffb6b9 0%, #ff6f91 100%);
+      box-shadow: 0 4px 16px 0 #ffd6e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 4px solid #fff;
+    }
+    .profile-avatar img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .profile-avatar svg {
+      width: 60px; height: 60px; color: #fff;
+    }
+    .profile-name {
+      margin-top: 24px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #e94f7c;
+      text-align: center;
+    }
+    .profile-birth {
+      margin-top: 8px;
+      font-size: 1.08rem;
+      color: #b48ca7;
+      text-align: center;
+      font-weight: 500;
+    }
+    .profile-achievements-title {
+      margin-top: 32px;
+      font-size: 1.13rem;
+      font-weight: 700;
+      color: #e94f7c;
+      margin-bottom: 12px;
+      text-align: center;
+      letter-spacing: 0.01em;
+    }
+    .profile-achievements {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+    .profile-badge {
+      background: linear-gradient(135deg, #ffb6b9 0%, #ff6f91 100%);
+      color: #fff;
+      border-radius: 18px;
+      padding: 12px 20px;
+      font-size: 1.01rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px 0 #ffd6e0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+    .profile-badge svg {
+      width: 22px; height: 22px; color: #fff;
+    }
+    /* Profile tabs */
+    .profile-tabs {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      margin-top: 32px;
+      margin-bottom: 0;
+      background: #fff0f6;
+      border-radius: 18px;
+      box-shadow: 0 2px 8px 0 #ffd6e0;
+      overflow: hidden;
+      width: 90%;
+      max-width: 340px;
+    }
+    .profile-tab {
+      flex: 1;
+      padding: 14px 0 12px 0;
+      font-size: 1.08rem;
+      font-weight: 600;
+      color: #b48ca7;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s, background 0.2s;
+      outline: none;
+      position: relative;
+    }
+    .profile-tab.active {
+      color: #e94f7c;
+      background: linear-gradient(90deg, #ffe3e3 0%, #fff0f6 100%);
+      box-shadow: 0 2px 8px 0 #ffd6e0;
+    }
+    .profile-tab:not(:last-child) {
+      border-right: 1px solid #ffd6e0;
+    }
+    .profile-tab-content {
+      width: 100%;
+      max-width: 370px;
+      margin: 0 auto;
+      padding: 0 0 32px 0;
+      min-height: 180px;
+      animation: fadeTab 0.35s;
+    }
+    @keyframes fadeTab {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* --- Лента с фильтрами и карточками (новый стиль) --- */
+    .feed-filters {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      padding: 0 0 16px 0;
+      overflow-x: auto;
+      margin-bottom: 8px;
+      scrollbar-width: none;
+    }
+    .feed-filter-btn {
+      border: none;
+      border-radius: 10px;
+      padding: 6px 16px;
+      font-size: 1.01rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: #f3f3f3;
+      color: #7a7a7a;
+      transition: background 0.2s, color 0.2s;
+      outline: none;
+      white-space: nowrap;
+    }
+    .feed-filter-btn.active { background: #fff; color: #23284a; box-shadow: 0 2px 8px 0 #ffd6e0; }
+    .feed-filter-btn.traty { background: #e3e3ff; color: #7a5cff; }
+    .feed-filter-btn.sovety { background: #ffe3e3; color: #e94f7c; }
+    .feed-filter-btn.nagrady { background: #e3f7ff; color: #00b6e3; }
+    .feed-filter-btn.vygoda { background: #e3ffe3; color: #1bbf4c; }
+    .feed-filter-btn.insight { background: #fffbe3; color: #bfa91b; }
+    .feed-cards-list { display: flex; flex-direction: column; gap: 12px; }
+    .feed-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px 0 #ffd6e0;
+      padding: 14px 16px 12px 16px;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      font-size: 1.07rem;
+      position: relative;
+    }
+    .feed-card-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+      font-size: 1.05rem;
+    }
+    .feed-card-title.traty { color: #e94f7c; }
+    .feed-card-title.sovety { color: #e94f7c; }
+    .feed-card-title.nagrady { color: #bfa91b; }
+    .feed-card-title.vygoda { color: #1bbf4c; }
+    .feed-card-title.insight { color: #bfa91b; }
+    .feed-card.sovety { border-left: 4px solid #e94f7c; }
+    .feed-card.traty { border-left: 4px solid #7a5cff; }
+    .feed-card.nagrady { border-left: 4px solid #bfa91b; }
+    .feed-card.vygoda { border-left: 4px solid #1bbf4c; }
+    .feed-card.insight { border-left: 4px solid #bfa91b; }
+    @media (max-width: 480px) {
+      .app-container {
+        max-width: 100vw;
+      }
+      .main-card { min-width: 94vw; }
+      .balance-card {
+        margin: 18px 2vw 0 2vw;
+        padding: 20px 4vw 12px 4vw;
+        min-height: 140px;
+      }
+      .feed-title {
+        margin-left: 0;
+        font-size: 1.1rem;
+      }
+      .feed-list {
+        padding: 0 0 18px 0;
+        width: 98vw;
+        max-width: 99vw;
+      }
+      .accounts-carousel { height: 220px; }
+      .account-card { min-width: 90vw; max-width: 98vw; }
+      .profile-screen { max-width: 100vw; }
+      .profile-btn { right: 12px; top: 12px; }
+      .profile-close { right: 12px; top: 12px; }
+      .profile-avatar { margin-top: 48px; }
+    }
+  </style>
+</head>
+<body data-theme="dark">
+  <div class="app-container">
+    <!-- Главный экран -->
+    <div class="screen screen-main active" id="mainScreen">
+      <div class="accounts-carousel" id="accountsCarousel">
+        <!-- Карточки счетов будут рендериться тут -->
+      </div>
+      <div class="accounts-dots" id="accountsDots"></div>
+      <div class="swipe-hint">
+        <svg class="swipe-hint-arrow" viewBox="0 0 24 24"><path fill="#b0b8d1" d="M12 16.5c-.28 0-.53-.11-.71-.29l-6-6a1.003 1.003 0 0 1 1.42-1.42L12 13.59l5.29-5.3a1.003 1.003 0 0 1 1.42 1.42l-6 6c-.18.18-.43.29-.71.29z"/></svg>
+      </div>
+    </div>
+    <!-- Лента предложений -->
+    <div class="screen screen-feed" id="feedScreen">
+      <div class="feed-container">
+        <div class="feed-title">Интересное от банка</div>
+        <div class="feed-filters" id="feedFilters"></div>
+        <div class="feed-cards-list" id="feedCardsList"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Кнопка профиля -->
+  <button class="profile-btn" id="profileBtn" title="Профиль">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="4.5"/><path d="M4 20c0-3.31 3.58-6 8-6s8 2.69 8 6"/></svg>
+  </button>
+  <!-- Экран профиля -->
+  <div class="profile-screen" id="profileScreen">
+    <button class="profile-close" id="closeProfile" title="Закрыть">✕</button>
+    <div class="profile-avatar">
+      <svg viewBox="0 0 64 64"><circle cx="32" cy="24" r="16" fill="#fff" opacity=".25"/><ellipse cx="32" cy="50" rx="18" ry="10" fill="#fff" opacity=".18"/></svg>
+    </div>
+    <div class="profile-name" id="profileName">Иван Иванов</div>
+    <div class="profile-birth" id="profileBirth">Дата рождения: 12.03.2002</div>
+    <div class="profile-tabs" id="profileTabs">
+      <button class="profile-tab active" data-tab="info">Инфо</button>
+      <button class="profile-tab" data-tab="achievements">Достижения</button>
+      <button class="profile-tab" data-tab="settings">Настройки</button>
+    </div>
+    <div class="profile-tab-content" id="profileTabInfo">
+      <!-- Информация -->
+      <div style="margin-top:24px;text-align:center;color:#b48ca7;font-size:1.08rem;">Добро пожаловать в AlphaYOU!</div>
+    </div>
+    <div class="profile-tab-content" id="profileTabAchievements" style="display:none;">
+      <div class="profile-achievements-title">Достижения</div>
+      <div class="profile-achievements">
+        <div class="profile-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#fff" opacity=".3"/><path d="M12 7v5l3 3" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>Премиум-клиент</div>
+        <div class="profile-badge"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="8" fill="#fff" opacity=".3"/><path d="M8 12h8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>100+ транзакций</div>
+        <div class="profile-badge"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="10" ry="8" fill="#fff" opacity=".3"/><path d="M8 12h8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>Путешественник</div>
+        <div class="profile-badge"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="6" fill="#fff" opacity=".3"/><path d="M12 8v8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>Реферальный гуру</div>
+      </div>
+    </div>
+    <div class="profile-tab-content" id="profileTabSettings" style="display:none;">
+      <div class="profile-achievements-title">Настройки</div>
+      <div class="feed-list" style="margin-top:12px;">
+        <div class="feed-item">
+          <div class="feed-item-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#ffb6b9"/><path d="M12 7v5l3 3" stroke="#e94f7c" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div style="flex:1;min-width:0;">
+            <div class="feed-item-title">Уведомления</div>
+            <div class="feed-item-desc">Включить push-уведомления о новых операциях</div>
+          </div>
+          <button class="feed-item-action">Включить</button>
+        </div>
+        <div class="feed-item">
+          <div class="feed-item-icon"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="8" fill="#ffb6b9"/><path d="M8 12h8" stroke="#e94f7c" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div style="flex:1;min-width:0;">
+            <div class="feed-item-title">Безопасность</div>
+            <div class="feed-item-desc">Изменить PIN-код или пароль</div>
+          </div>
+          <button class="feed-item-action">Изменить</button>
+        </div>
+        <div class="feed-item">
+          <div class="feed-item-icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="10" ry="8" fill="#ffb6b9"/><path d="M8 12h8" stroke="#e94f7c" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div style="flex:1;min-width:0;">
+            <div class="feed-item-title">Тема</div>
+            <div class="feed-item-desc">Светлая / Темная / Авто</div>
+          </div>
+          <button class="feed-item-action">Сменить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Свайп вверх/вниз для перехода к ленте, влево/вправо для смены счета
+    let startY = null, startX = null;
+    const mainScreen = document.getElementById('mainScreen');
+    const feedScreen = document.getElementById('feedScreen');
+    const mainCard = document.getElementById('mainCard');
+    // Пример счетов
+    const accounts = [
+      {
+        name: 'Основной счет',
+        balance: '12 500 ₽ ', // ← вот здесь меняйте сумму
+        purchase: { title: 'Кино', time: '17:10', amount: '- 240 ₽' }
+      },
+      {
+        name: 'Карта Travel',
+        balance: '1 200 $',
+        purchase: { title: 'Starbucks', time: '09:42', amount: '- 3,20 $' }
+      },
+      {
+        name: 'Сбережения',
+        balance: '100 000 ₽',
+        purchase: { title: 'Перевод', time: 'Вчера', amount: '+ 10 000 ₽' }
+      }
+    ];
+    let currentAccount = 0;
+    function renderAccountsCarousel() {
+      const carousel = document.getElementById('accountsCarousel');
+      // Очищаем только карточки
+      let cards = carousel.querySelectorAll('.account-card');
+      cards.forEach(card => card.remove());
+      // left
+      if (currentAccount > 0) {
+        carousel.appendChild(createAccountCard(currentAccount - 1, 'left'));
+      }
+      // center
+      carousel.appendChild(createAccountCard(currentAccount, 'center'));
+      // right
+      if (currentAccount < accounts.length - 1) {
+        carousel.appendChild(createAccountCard(currentAccount + 1, 'right'));
+      }
+      // dots
+      const dotsElem = document.getElementById('accountsDots');
+      const hintElem = document.getElementById('accountSwipeHint');
+      dotsElem.innerHTML = '';
+      for (let i = 0; i < accounts.length; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'accounts-dot' + (i === currentAccount ? ' active' : '');
+        dotsElem.appendChild(dot);
+      }
+    }
+    function createAccountCard(idx, pos) {
+      const acc = accounts[idx];
+      const card = document.createElement('div');
+      card.className = 'account-card ' + pos;
+      card.innerHTML = `
+        <div class="main-label">${acc.name}</div>
+        <div class="main-balance">${acc.balance}</div>
+        <div class="main-actions">
+          <button class="main-action-btn" title="Отправить"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M2 21l21-9-21-9v7l15 2-15 2z"/></svg></button>
+          <button class="main-action-btn" title="Получить"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 21V3m0 0l-7 7m7-7l7 7" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="main-action-btn" title="Статистика"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 17h3v-7H3v7zm5 0h3v-12H8v12zm5 0h3v-4h-3v4zm5 0h3v-9h-3v9z"/></svg></button>
+          <button class="main-action-btn" title="Ещё"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="19" cy="12" r="2" fill="currentColor"/></svg></button>
+        </div>
+        <div class="last-purchase-card">
+          <div class="last-purchase-icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20z" fill="#23284a"/><path d="M8 12h8M12 8v8" stroke="#00e0d3" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="last-purchase-info">
+            <div class="last-purchase-title">${acc.purchase.title}</div>
+            <div class="last-purchase-time">${acc.purchase.time}</div>
+          </div>
+          <div class="last-purchase-amount">${acc.purchase.amount}</div>
+        </div>
+      `;
+      return card;
+    }
+    renderAccountsCarousel();
+    function showFeed() {
+      mainScreen.classList.remove('active');
+      mainScreen.classList.add('inactive');
+      feedScreen.classList.add('active');
+      feedScreen.classList.remove('inactive');
+    }
+    function showMain() {
+      mainScreen.classList.add('active');
+      mainScreen.classList.remove('inactive');
+      feedScreen.classList.remove('active');
+      feedScreen.classList.add('inactive');
+    }
+    function animateAccountChange(direction) {
+      const carousel = document.getElementById('accountsCarousel');
+      const cards = carousel.querySelectorAll('.account-card');
+      // Анимация: fade out текущей центральной, fade in новой
+      if (direction === 'left') {
+        // Свайп влево: текущая уходит влево, новая появляется справа
+        cards.forEach(card => {
+          if (card.classList.contains('center')) card.classList.add('fadeOutLeft');
+          if (card.classList.contains('right')) card.classList.add('fadeInRight');
+        });
+        setTimeout(() => {
+          currentAccount++;
+          renderAccountsCarousel();
+        }, 450);
+      } else if (direction === 'right') {
+        // Свайп вправо: текущая уходит вправо, новая появляется слева
+        cards.forEach(card => {
+          if (card.classList.contains('center')) card.classList.add('fadeOutRight');
+          if (card.classList.contains('left')) card.classList.add('fadeInLeft');
+        });
+        setTimeout(() => {
+          currentAccount--;
+          renderAccountsCarousel();
+        }, 450);
+      }
+    }
+    const accountsCarousel = document.getElementById('accountsCarousel');
+    // Свайп между счетами — только на accounts-carousel
+    accountsCarousel.addEventListener('touchstart', function(e) {
+      if (e.touches.length === 1) {
+        startY = e.touches[0].clientY;
+        startX = e.touches[0].clientX;
+      }
+    });
+    accountsCarousel.addEventListener('touchend', function(e) {
+      if (startY === null || startX === null) return;
+      const endY = e.changedTouches[0].clientY;
+      const endX = e.changedTouches[0].clientX;
+      const dx = endX - startX;
+      const dy = endY - startY;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+        // Свайп влево/вправо
+        if (dx < 0 && currentAccount < accounts.length - 1) {
+          animateAccountChange('left');
+        } else if (dx > 0 && currentAccount > 0) {
+          animateAccountChange('right');
+        }
+      }
+      startY = null;
+      startX = null;
+    });
+    // Свайп вверх для открытия ленты — на весь главный экран
+    mainScreen.addEventListener('touchstart', function(e) {
+      if (e.touches.length === 1) {
+        startY = e.touches[0].clientY;
+      }
+    });
+    mainScreen.addEventListener('touchend', function(e) {
+      if (startY === null) return;
+      const endY = e.changedTouches[0].clientY;
+      if (mainScreen.classList.contains('active') && startY - endY > 60) {
+        showFeed();
+      }
+      startY = null;
+    });
+    // Свайп вниз для возврата из ленты — на весь экран ленты
+    feedScreen.addEventListener('touchstart', function(e) {
+      if (e.touches.length === 1) {
+        startY = e.touches[0].clientY;
+      }
+    });
+    feedScreen.addEventListener('touchend', function(e) {
+      if (startY === null) return;
+      const endY = e.changedTouches[0].clientY;
+      if (feedScreen.classList.contains('active') && endY - startY > 60) {
+        showMain();
+      }
+      startY = null;
+    });
+    // Для мыши
+    feedScreen.addEventListener('mousedown', function(e) {
+      mouseStartY = e.clientY;
+    });
+    feedScreen.addEventListener('mouseup', function(e) {
+      if (mouseStartY === null) return;
+      const mouseEndY = e.clientY;
+      if (feedScreen.classList.contains('active') && mouseEndY - mouseStartY > 60) {
+        showMain();
+      }
+      mouseStartY = null;
+    });
+    // Mouse events for desktop demo
+    let mouseStartY = null, mouseStartX = null;
+    accountsCarousel.addEventListener('mousedown', function(e) {
+      mouseStartY = e.clientY;
+      mouseStartX = e.clientX;
+    });
+    accountsCarousel.addEventListener('mouseup', function(e) {
+      if (mouseStartY === null || mouseStartX === null) return;
+      const mouseEndY = e.clientY;
+      const mouseEndX = e.clientX;
+      const dx = mouseEndX - mouseStartX;
+      const dy = mouseEndY - mouseStartY;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+        if (dx < 0 && currentAccount < accounts.length - 1) {
+          animateAccountChange('left');
+        } else if (dx > 0 && currentAccount > 0) {
+          animateAccountChange('right');
+        }
+      }
+      mouseStartY = null;
+      mouseStartX = null;
+    });
+    // Свайп вверх для открытия ленты — на весь главный экран (мышь)
+    mainScreen.addEventListener('mousedown', function(e) {
+      mouseStartY = e.clientY;
+    });
+    mainScreen.addEventListener('mouseup', function(e) {
+      if (mouseStartY === null) return;
+      const mouseEndY = e.clientY;
+      if (mainScreen.classList.contains('active') && mouseStartY - mouseEndY > 60) {
+        showFeed();
+      }
+      mouseStartY = null;
+    });
+    // Открытие/закрытие профиля
+    document.getElementById('profileBtn').onclick = function() {
+      document.getElementById('profileScreen').classList.add('active');
+    };
+    document.getElementById('closeProfile').onclick = function() {
+      document.getElementById('profileScreen').classList.remove('active');
+    };
+    // Hide arrow on feed
+    feedScreen.addEventListener('transitionend', function() {
+      const swipeHint = document.querySelector('.swipe-hint');
+      if (feedScreen.classList.contains('active')) {
+        if (swipeHint) swipeHint.style.display = 'none';
+      } else {
+        if (swipeHint) swipeHint.style.display = '';
+      }
+    });
+    // Вкладки профиля
+    const tabBtns = document.querySelectorAll('.profile-tab');
+    const tabContents = {
+      info: document.getElementById('profileTabInfo'),
+      achievements: document.getElementById('profileTabAchievements'),
+      settings: document.getElementById('profileTabSettings'),
+    };
+    tabBtns.forEach(btn => {
+      btn.onclick = function() {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        Object.keys(tabContents).forEach(key => {
+          tabContents[key].style.display = (btn.dataset.tab === key) ? '' : 'none';
+        });
+      };
+    });
+    // --- Новая лента с фильтрами ---
+    const feedData = [
+      { type: 'traty', title: 'Траты', text: 'Ты потратил на кофе 2 300₽ за месяц — это +47% к прошлому' },
+      { type: 'sovety', title: 'Советы', text: 'Ты часто переводишь деньги другу в Сбер — порекомендуй карту Альфа и получай бонусы' },
+      { type: 'nagrady', title: 'Забрать награду', text: 'Ты прошёл 5 дней без трат — +1 шаг в миссии “Сам себе финансист”' },
+      { type: 'vygoda', title: 'Выгода', text: 'Суперкэшбэк на Ростикс — сегодня только для тебя' },
+      { type: 'insight', title: 'Инсайт', text: 'Ты не тратил деньги 2 дня — proud of you 💪' },
+      { type: 'sovety', title: 'Совет', text: 'Совет: 30% дохода можно отправлять в накопления' },
+    ];
+    const feedFilters = [
+      { type: 'traty', label: 'траты' },
+      { type: 'sovety', label: 'советы' },
+      { type: 'nagrady', label: 'награды' },
+      { type: 'vygoda', label: 'выгода' },
+      { type: 'insight', label: 'инсайт' },
+    ];
+    let activeFeedFilter = null;
+    function renderFeedFilters() {
+      const filtersElem = document.getElementById('feedFilters');
+      filtersElem.innerHTML = '';
+      feedFilters.forEach(f => {
+        const btn = document.createElement('button');
+        btn.className = 'feed-filter-btn ' + f.type + (activeFeedFilter === f.type ? ' active' : '');
+        btn.textContent = f.label;
+        btn.onclick = () => {
+          if (activeFeedFilter === f.type) {
+            activeFeedFilter = null;
+          } else {
+            activeFeedFilter = f.type;
+          }
+          renderFeedFilters();
+          renderFeedCards();
+        };
+        filtersElem.appendChild(btn);
+      });
+    }
+    function renderFeedCards() {
+      const listElem = document.getElementById('feedCardsList');
+      listElem.innerHTML = '';
+      let filtered = activeFeedFilter ? feedData.filter(d => d.type === activeFeedFilter) : feedData;
+      filtered.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'feed-card ' + item.type;
+        card.innerHTML = `<div class="feed-card-title ${item.type}">${item.title}</div><div>${item.text}</div>`;
+        listElem.appendChild(card);
+      });
+    }
+    renderFeedFilters();
+    renderFeedCards();
+  </script>
+</body>
+</html> 
