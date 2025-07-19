@@ -353,15 +353,15 @@
       display: none;
     }
     .feed-filter-btn {
-      border: none;
+      border: 2px solid #e0e0e0;
       border-radius: 22px;
       padding: 8px 22px;
       font-size: 1.08rem;
       font-weight: 700;
       cursor: pointer;
-      background: #f3f3f3;
-      color: #fff;
-      transition: background 0.2s, color 0.2s;
+      background: #fff;
+      color: #232323;
+      transition: background 0.2s, color 0.2s, border 0.2s;
       outline: none;
       white-space: nowrap;
       box-shadow: 0 2px 8px 0 #e0e0e0;
@@ -369,15 +369,15 @@
       margin-left: 0;
       display: inline-block;
     }
-    .feed-filter-btn.traty { background: #e94f7c; color: #fff; }
-    .feed-filter-btn.sovety { background: #a13cf7; color: #fff; }
-    .feed-filter-btn.nagrady { background: #6be27b; color: #fff; }
-    .feed-filter-btn.vygoda { background: #3ee6e6; color: #fff; }
-    .feed-filter-btn.plus { background: #181818; color: #ffd600; }
+    .feed-filter-btn.traty { border-color: #e94f7c; color: #e94f7c; }
+    .feed-filter-btn.sovety { border-color: #a13cf7; color: #a13cf7; }
+    .feed-filter-btn.nagrady { border-color: #6be27b; color: #6be27b; }
+    .feed-filter-btn.vygoda { border-color: #3ee6e6; color: #3ee6e6; }
+    .feed-filter-btn.plus { border-color: #ffd600; color: #ffd600; }
     .feed-filter-btn.active {
-      box-shadow: 0 4px 16px 0 #e0e0e0;
+      background: #f6f6f6;
+      border-width: 3px;
       filter: brightness(0.95);
-      border: 2px solid #ffd600;
     }
     .feed-cards-list {
       display: flex;
@@ -399,6 +399,9 @@
       position: relative;
       overflow: hidden;
       color: #fff;
+      background: #fff;
+      transition: box-shadow 0.3s, background 0.3s;
+      animation: fadein 0.7s;
     }
     .feed-card.traty { background: #e94f7c; }
     .feed-card.sovety { background: #a13cf7; }
@@ -422,40 +425,28 @@
     .feed-card.vygoda .feed-card-accent {
       color: #181818;
     }
-    .feed-card .feed-card-check {
-      font-size: 2.1rem;
-      margin-right: 10px;
-      color: #181818;
-    }
     .feed-card-content {
       display: flex;
       flex-direction: column;
       gap: 2px;
     }
-    .feed-card-title {
-      font-weight: 700;
-      font-size: 1.08rem;
-      margin-bottom: 2px;
+    .feed-card-graph {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      margin-top: 12px;
     }
-    .feed-card-desc {
-      font-size: 1.08rem;
-      font-weight: 500;
+    .bar {
+      width: 32px;
+      border-radius: 8px 8px 0 0;
+      background: #fff;
+      box-shadow: 0 2px 8px #e0e0e0;
     }
-    .feed-card .feed-card-link {
-      color: #181818;
-      font-weight: 700;
-      text-decoration: underline;
-      cursor: pointer;
-      margin-top: 4px;
-    }
-    .feed-card.traty .feed-card-accent { color: #fff; }
-    .feed-card.sovety .feed-card-accent { color: #fff; }
-    .feed-bottom-message {
-      margin: 32px 0 0 0;
-      text-align: center;
-      color: #181818;
-      font-size: 1.13rem;
-      font-weight: 600;
+    .bar-jan { height: 48px; background: #b39ddb; }
+    .bar-feb { height: 120px; background: #ffd600; }
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     /* Нижнее меню */
     .bottom-nav {
@@ -985,8 +976,6 @@
     <div id="widgetsArea" class="widgets-area-grid"></div>
     <!-- Кнопка добавления виджета -->
     <button id="addWidgetBtn" class="add-widget-btn" title="Добавить виджет">+</button>
-    <!-- Кнопка редактирования виджетов -->
-    <button id="editWidgetBtn" class="edit-widget-btn" title="Редактировать виджеты">✔</button>
     <!-- Модальное окно выбора виджетов -->
     <div id="widgetPickerModal" class="widget-picker-modal">
       <div class="widget-picker-content">
@@ -995,10 +984,7 @@
         <button id="closeWidgetPicker" class="close-widget-picker">Закрыть</button>
       </div>
     </div>
-    <div class="swipe-hint" id="swipeHint">
-      <svg class="swipe-hint-arrow" viewBox="0 0 48 48"><path d="M24 16v16M16 32l8 8 8-8" stroke="#b0b8d1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-    </div>
-          </div>
+  </div>
   <!-- Лента -->
   <div class="screen screen-feed inactive-screen" id="feedScreen">
     <div class="feed-top">
@@ -1006,8 +992,7 @@
         <button class="feed-round-btn bell" title="Уведомления">🔔</button>
         <button class="feed-round-btn profile" title="Профиль">П</button>
         <button class="feed-plus-btn">
-          Получить больше с Альфа-Плюс
-          <span class="crown">👑</span>
+          Получить больше с Альфа-Плюс <span class="crown">👑</span>
         </button>
       </div>
       <div class="feed-filters" id="feedFilters"></div>
@@ -1015,245 +1000,423 @@
     <div class="feed-cards-list" id="feedCardsList"></div>
     <div class="feed-bottom-message">Скоро здесь появится больше инсайтов!</div>
   </div>
-  <!-- Удалено: нижнее меню -->
+  <style>
+    .screen-feed {
+      position: fixed;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%) translateY(100%);
+      width: 100vw;
+      max-width: 430px;
+      min-height: 100vh;
+      background: #fff;
+      z-index: 100;
+      box-shadow: 0 -2px 24px 0 #e0e0e0;
+      transition: transform 0.45s cubic-bezier(.77,0,.18,1), opacity 0.3s;
+      opacity: 0;
+      pointer-events: none;
+      display: block;
+    }
+    .screen-feed.active-screen {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .screen-feed.inactive-screen {
+      transform: translateX(-50%) translateY(100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .active-screen { display: block !important; }
+    .inactive-screen { display: none !important; }
+    /* Верхняя панель главного экрана */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 18px 0 18px;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #e50914;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .user-name {
+      font-size: 1.22rem;
+      font-weight: 600;
+      color: #232323;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .icon-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #f6f6f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      box-shadow: none;
+      padding: 0;
+      transition: background 0.2s;
+    }
+    .icon-btn img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      display: block;
+    }
+    .icon-btn:active {
+      background: #edeafd;
+    }
+    /* Блок счетов и действий */
+    .accounts-actions-row {
+      display: flex;
+      flex-direction: row;
+      gap: 22px;
+      margin: 32px 18px 0 18px;
+    }
+    .accounts-block {
+      flex: 1 1 0;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .account-main-card {
+      background: #f6f6f6;
+      border-radius: 22px;
+      padding: 20px 22px 18px 22px;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .card-img {
+      width: 76px;
+      height: 52px;
+      border-radius: 14px;
+      object-fit: cover;
+      background: #e50914;
+      display: block;
+      box-shadow: 0 2px 8px #e0e0e0;
+    }
+    .card-balance-block {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-width: 0;
+      gap: 4px;
+    }
+    .account-balance {
+      font-size: 1.32rem;
+      font-weight: 700;
+      color: #232323;
+      line-height: 1.1;
+    }
+    .account-label {
+      font-size: 1.08rem;
+      color: #7a7a7a;
+      font-weight: 500;
+      line-height: 1.1;
+    }
+    .account-invest-card {
+      background: #edeafd;
+      border-radius: 16px;
+      padding: 16px 20px 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 0;
+    }
+    .invest-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      object-fit: cover;
+      background: #a13cf7;
+      display: block;
+      box-shadow: 0 2px 8px #e0e0e0;
+    }
+    .invest-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+    .invest-balance {
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: #232323;
+    }
+    .invest-label {
+      font-size: 1.05rem;
+      color: #7a7a7a;
+      font-weight: 500;
+    }
+    .actions-col {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .action-vert-btn {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      background: #f6f6f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      box-shadow: none;
+      padding: 0;
+      transition: background 0.2s;
+    }
+    .action-vert-btn:active {
+      background: #edeafd;
+    }
+    .action-img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 12px;
+      display: block;
+      margin: 0 auto;
+    }
+    /* Быстрые действия */
+    .quick-actions {
+      display: flex;
+      gap: 22px;
+      margin: 24px 18px 0 18px;
+    }
+    .quick-action {
+      background: #f6f6f6;
+      border-radius: 18px;
+      width: 76px;
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+      padding: 0;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px #e0e0e0;
+    }
+    .quick-action:active {
+      background: #edeafd;
+    }
+    .quick-img {
+      width: 54px;
+      height: 54px;
+      object-fit: contain;
+      border-radius: 14px;
+      display: block;
+    }
+    /* Последняя операция */
+    .last-transaction {
+      background: #f6f6f6;
+      border-radius: 18px;
+      margin: 28px 18px 0 18px;
+      padding: 18px 22px 16px 22px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      box-shadow: 0 2px 8px #e0e0e0;
+    }
+    .last-transaction-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background: #00bfff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 2rem;
+    }
+    .last-transaction-icon img {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      border-radius: 12px;
+      display: block;
+    }
+    .last-transaction-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      gap: 4px;
+    }
+    .last-transaction-title {
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: #232323;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .last-transaction-category {
+      font-size: 1.08rem;
+      color: #7a7a7a;
+      font-weight: 500;
+    }
+    .last-transaction-amount {
+      font-size: 1.22rem;
+      font-weight: 800;
+      color: #232323;
+      margin-left: 12px;
+      white-space: nowrap;
+    }
+    /* --- ЛЕНТА --- */
+    .feed-top {
+      padding: 24px 18px 0 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .feed-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .feed-filters {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      padding: 0 0 12px 0;
+      margin: 0 0 8px 0;
+      justify-content: flex-start;
+      align-items: center;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .feed-filters::-webkit-scrollbar {
+      display: none;
+    }
+    .feed-filter-btn {
+      border: 2px solid #e0e0e0;
+      border-radius: 22px;
+      padding: 8px 22px;
+      font-size: 1.08rem;
+      font-weight: 700;
+      cursor: pointer;
+      background: #fff;
+      color: #232323;
+      transition: background 0.2s, color 0.2s, border 0.2s;
+      outline: none;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px 0 #e0e0e0;
+      margin-right: 0;
+      margin-left: 0;
+      display: inline-block;
+    }
+    .feed-filter-btn.traty { border-color: #e94f7c; color: #e94f7c; }
+    .feed-filter-btn.sovety { border-color: #a13cf7; color: #a13cf7; }
+    .feed-filter-btn.nagrady { border-color: #6be27b; color: #6be27b; }
+    .feed-filter-btn.vygoda { border-color: #3ee6e6; color: #3ee6e6; }
+    .feed-filter-btn.plus { border-color: #ffd600; color: #ffd600; }
+    .feed-filter-btn.active {
+      background: #f6f6f6;
+      border-width: 3px;
+      filter: brightness(0.95);
+    }
+    .feed-cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 0 0 24px 0;
+      margin: 0 18px;
+    }
+    .feed-card {
+      border-radius: 22px;
+      box-shadow: 0 4px 24px 0 #e0e0e0, 0 1.5px 8px 0 #ffb6b9;
+      padding: 22px 18px 18px 18px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      min-height: 80px;
+      font-size: 1.13rem;
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+      background: #fff;
+      transition: box-shadow 0.3s, background 0.3s;
+      animation: fadein 0.7s;
+    }
+    .feed-card.traty { background: #e94f7c; }
+    .feed-card.sovety { background: #a13cf7; }
+    .feed-card.nagrady { background: #6be27b; color: #181818; }
+    .feed-card.vygoda { background: #3ee6e6; color: #181818; }
+    .feed-card.plus { background: #181818; color: #ffd600; }
+    .feed-card .feed-card-emoji {
+      font-size: 2.1rem;
+      margin-right: 10px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 2px 2px #0002);
+    }
+    .feed-card .feed-card-accent {
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-right: 10px;
+      color: #fff;
+      display: inline-block;
+    }
+    .feed-card.nagrady .feed-card-accent,
+    .feed-card.vygoda .feed-card-accent {
+      color: #181818;
+    }
+    .feed-card-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .feed-card-graph {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .bar {
+      width: 32px;
+      border-radius: 8px 8px 0 0;
+      background: #fff;
+      box-shadow: 0 2px 8px #e0e0e0;
+    }
+    .bar-jan { height: 48px; background: #b39ddb; }
+    .bar-feb { height: 120px; background: #ffd600; }
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
   <script>
-    // --- Фильтры ---
-    const feedFilters = [
-      { type: 'traty', label: 'Траты' },
-      { type: 'sovety', label: 'Советы' },
-      { type: 'nagrady', label: 'Награды' },
-      { type: 'vygoda', label: 'Выгоды' },
-      { type: 'plus', label: 'Плюс' },
-    ];
-    let activeFeedFilter = null;
-    function renderFeedFilters() {
-      const filtersElem = document.getElementById('feedFilters');
-      filtersElem.innerHTML = '';
-      feedFilters.forEach(f => {
-        const btn = document.createElement('button');
-        btn.className = 'feed-filter-btn ' + f.type + (activeFeedFilter === f.type ? ' active' : '');
-        btn.textContent = f.label;
-        btn.onclick = () => {
-          if (activeFeedFilter === f.type) {
-            activeFeedFilter = null;
-          } else {
-            activeFeedFilter = f.type;
-      }
-          renderFeedFilters();
-          renderFeedCards();
-        };
-        filtersElem.appendChild(btn);
-      });
-    }
-    // --- Карточки новостей ---
-    const feedData = [
-      { type: 'traty', accent: '+47%', text: 'Ты потратил на кофе в этом месяце по сравнению с предыдущим' },
-      { type: 'sovety', emoji: '🧐', text: 'Ты часто переводишь на Сбер — порекомендуй карту Альфа и получай бонусы' },
-      { type: 'nagrady', check: true, text: 'Выполнено:\n«Сам себе финансист»\nНажимай и забирай награду!' },
-      { type: 'vygoda', emoji: '🤩', text: 'Супер кэшбек на «Ростикс» — сегодня только для тебя' },
-    ];
-    function renderFeedCards() {
-      const listElem = document.getElementById('feedCardsList');
-      listElem.innerHTML = '';
-      let filtered = activeFeedFilter ? feedData.filter(d => d.type === activeFeedFilter) : feedData;
-      filtered.forEach(item => {
-      const card = document.createElement('div');
-        card.className = 'feed-card ' + item.type;
-        let content = '';
-        if (item.accent) {
-          content += `<span class='feed-card-accent'>${item.accent}</span>`;
-        }
-        if (item.emoji) {
-          content += `<span class='feed-card-emoji'>${item.emoji}</span>`;
-        }
-        if (item.check) {
-          content += `<span class='feed-card-check'>✔️</span>`;
-    }
-        content += `<span class='feed-card-content'>${item.text.replace(/\n/g, '<br>')}</span>`;
-        card.innerHTML = content;
-        listElem.appendChild(card);
-        });
-    }
-    renderFeedFilters();
-    renderFeedCards();
-
-    let startY = null;
-    let currentY = null;
-    let dragging = false;
-    let dragType = null; // 'up' or 'down'
-    const feedScreen = document.getElementById('feedScreen');
-    const mainContainer = document.getElementById('mainContainer');
-    const swipeHint = document.getElementById('swipeHint');
-
-    // --- Drag-свайп вверх (открытие ленты) ---
-    mainContainer.addEventListener('touchstart', function(e) {
-      if (e.touches.length === 1) {
-        startY = e.touches[0].clientY;
-        dragging = true;
-        dragType = 'up';
-        feedScreen.style.transition = 'none';
-        feedScreen.classList.add('active-screen');
-        feedScreen.classList.remove('inactive-screen');
-        feedScreen.style.transform = 'translateX(-50%) translateY(100%)';
-        feedScreen.style.opacity = 0;
-      }
-    });
-    mainContainer.addEventListener('touchmove', function(e) {
-      if (!dragging || dragType !== 'up') return;
-      currentY = e.touches[0].clientY;
-      let delta = Math.max(0, startY - currentY);
-      let percent = Math.min(1, delta / window.innerHeight);
-      feedScreen.style.transform = `translateX(-50%) translateY(${100 - percent * 100}%)`;
-      feedScreen.style.opacity = percent;
-    });
-    mainContainer.addEventListener('touchend', function(e) {
-      if (!dragging || dragType !== 'up') return;
-      let endY = e.changedTouches[0].clientY;
-      let delta = startY - endY;
-      feedScreen.style.transition = 'transform 0.45s cubic-bezier(.77,0,.18,1), opacity 0.3s';
-      if (delta > window.innerHeight * 0.18) {
-        // Открыть ленту
-        feedScreen.style.transform = 'translateX(-50%) translateY(0)';
-        feedScreen.style.opacity = 1;
-        setTimeout(() => { mainContainer.classList.add('blurred'); }, 300);
-        swipeHint.style.display = 'none';
-      } else {
-        // Вернуть вниз
-        feedScreen.classList.remove('active-screen');
-        feedScreen.classList.add('inactive-screen');
-        feedScreen.style.transform = 'translateX(-50%) translateY(100%)';
-        feedScreen.style.opacity = 0;
-        swipeHint.style.display = '';
-      }
-      dragging = false;
-      dragType = null;
-    });
-
-    // --- Drag-свайп вниз (закрытие ленты) ---
-    feedScreen.addEventListener('touchstart', function(e) {
-      if (e.touches.length === 1) {
-        startY = e.touches[0].clientY;
-        dragging = true;
-        dragType = 'down';
-        feedScreen.style.transition = 'none';
-      }
-    });
-    feedScreen.addEventListener('touchmove', function(e) {
-      if (!dragging || dragType !== 'down') return;
-      currentY = e.touches[0].clientY;
-      let delta = Math.max(0, currentY - startY);
-      let percent = Math.max(0, 1 - delta / window.innerHeight);
-      feedScreen.style.transform = `translateX(-50%) translateY(${(1 - percent) * 100}%)`;
-      feedScreen.style.opacity = percent;
-    });
-    feedScreen.addEventListener('touchend', function(e) {
-      if (!dragging || dragType !== 'down') return;
-      let endY = e.changedTouches[0].clientY;
-      let delta = endY - startY;
-      feedScreen.style.transition = 'transform 0.45s cubic-bezier(.77,0,.18,1), opacity 0.3s';
-      if (delta > window.innerHeight * 0.18) {
-        // Закрыть ленту
-        showMain();
-      } else {
-        // Вернуть наверх
-        feedScreen.classList.add('active-screen');
-        feedScreen.classList.remove('inactive-screen');
-        feedScreen.style.transform = 'translateX(-50%) translateY(0)';
-        feedScreen.style.opacity = 1;
-      }
-      dragging = false;
-      dragType = null;
-    });
-
-    // --- Для мыши (десктоп) ---
-    mainContainer.addEventListener('mousedown', function(e) {
-      startY = e.clientY;
-      dragging = true;
-      dragType = 'up';
-      feedScreen.style.transition = 'none';
-      feedScreen.classList.add('active-screen');
-      feedScreen.classList.remove('inactive-screen');
-      feedScreen.style.transform = 'translateX(-50%) translateY(100%)';
-      feedScreen.style.opacity = 0;
-    });
-    mainContainer.addEventListener('mousemove', function(e) {
-      if (!dragging || dragType !== 'up') return;
-      currentY = e.clientY;
-      let delta = Math.max(0, startY - currentY);
-      let percent = Math.min(1, delta / window.innerHeight);
-      feedScreen.style.transform = `translateX(-50%) translateY(${100 - percent * 100}%)`;
-      feedScreen.style.opacity = percent;
-    });
-    mainContainer.addEventListener('mouseup', function(e) {
-      if (!dragging || dragType !== 'up') return;
-      let endY = e.clientY;
-      let delta = startY - endY;
-      feedScreen.style.transition = 'transform 0.45s cubic-bezier(.77,0,.18,1), opacity 0.3s';
-      if (delta > window.innerHeight * 0.18) {
-        feedScreen.style.transform = 'translateX(-50%) translateY(0)';
-        feedScreen.style.opacity = 1;
-        setTimeout(() => { mainContainer.classList.add('blurred'); }, 300);
-        swipeHint.style.display = 'none';
-      } else {
-        feedScreen.classList.remove('active-screen');
-        feedScreen.classList.add('inactive-screen');
-        feedScreen.style.transform = 'translateX(-50%) translateY(100%)';
-        feedScreen.style.opacity = 0;
-        swipeHint.style.display = '';
-      }
-      dragging = false;
-      dragType = null;
-    });
-    feedScreen.addEventListener('mousedown', function(e) {
-      startY = e.clientY;
-      dragging = true;
-      dragType = 'down';
-      feedScreen.style.transition = 'none';
-    });
-    feedScreen.addEventListener('mousemove', function(e) {
-      if (!dragging || dragType !== 'down') return;
-      currentY = e.clientY;
-      let delta = Math.max(0, currentY - startY);
-      let percent = Math.max(0, 1 - delta / window.innerHeight);
-      feedScreen.style.transform = `translateX(-50%) translateY(${(1 - percent) * 100}%)`;
-      feedScreen.style.opacity = percent;
-    });
-    feedScreen.addEventListener('mouseup', function(e) {
-      if (!dragging || dragType !== 'down') return;
-      let endY = e.clientY;
-      let delta = endY - startY;
-      feedScreen.style.transition = 'transform 0.45s cubic-bezier(.77,0,.18,1), opacity 0.3s';
-      if (delta > window.innerHeight * 0.18) {
-        showMain();
-      } else {
-        feedScreen.classList.add('active-screen');
-        feedScreen.classList.remove('inactive-screen');
-        feedScreen.style.transform = 'translateX(-50%) translateY(0)';
-        feedScreen.style.opacity = 1;
-      }
-      dragging = false;
-      dragType = null;
-    });
-
-    function showMain() {
-      mainContainer.classList.add('active-screen');
-      mainContainer.classList.remove('inactive-screen');
-      mainContainer.classList.remove('blurred');
-      feedScreen.classList.remove('active-screen');
-      feedScreen.classList.add('inactive-screen');
-      feedScreen.style.transform = 'translateX(-50%) translateY(100%)';
-      feedScreen.style.opacity = 0;
-      swipeHint.style.display = '';
-    }
-    function showFeed() {
-      mainContainer.classList.add('blurred');
-      feedScreen.classList.add('active-screen');
-      feedScreen.classList.remove('inactive-screen');
-      feedScreen.style.transform = 'translateX(-50%) translateY(0)';
-      feedScreen.style.opacity = 1;
-      swipeHint.style.display = 'none';
-    }
-
     // --- Кастомизируемые виджеты на всю область ---
     let GRID_SIZE = 64;
     let GRID_COLS = 5;
@@ -1281,7 +1444,6 @@
         </div>
       ` },
       { id: 'invest', name: 'Инвесткопилка', w: 2, h: 1, render: (wObj = {}) => {
-        // Адаптивный виджет: крупная иконка, центрирование, масштабируемый текст
         const w = wObj.w || 2;
         const h = wObj.h || 1;
         let iconSize = Math.min(w, h) > 1 ? 64 : 40;
@@ -1295,91 +1457,88 @@
           </div>
         `;
       }},
-      { id: 'send', name: 'Отправить', w: 1, h: 1, render: () => `
-        <img src="paperplane.png" alt="plane" class="widget-img-full" />
-      ` },
-      { id: 'qr', name: 'QR', w: 1, h: 1, render: () => `
-        <img src="qr.png" alt="qr" class="widget-img-full" />
-      ` },
-      { id: 'world', name: 'Глобус', w: 1, h: 1, render: () => `
-        <img src="iconworld.png" alt="world" class="widget-img-full" />
-      ` },
-      { id: 'shop', name: 'Сумка', w: 1, h: 1, render: () => `
-        <img src="shop.png" alt="shop" class="widget-img-full" />
-      ` },
-      { id: 'ticket', name: 'Билет', w: 1, h: 1, render: () => `
-        <img src="tiket.png" alt="ticket" class="widget-img-full" />
-      ` },
-      { id: 'rubleplane', name: 'Авиабилет', w: 1, h: 1, render: () => `
-        <img src="rubleplane.png" alt="rubleplane" class="widget-img-full" />
-      ` },
+      { id: 'send', name: 'Отправить', w: 1, h: 1, render: () => `<img src="paperplane.png" alt="plane" class="widget-img-full" />` },
+      { id: 'qr', name: 'QR', w: 1, h: 1, render: () => `<img src="qr.png" alt="qr" class="widget-img-full" />` },
+      { id: 'world', name: 'Глобус', w: 1, h: 1, render: () => `<img src="iconworld.png" alt="world" class="widget-img-full" />` },
+      { id: 'shop', name: 'Сумка', w: 1, h: 1, render: () => `<img src="shop.png" alt="shop" class="widget-img-full" />` },
+      { id: 'ticket', name: 'Билет', w: 1, h: 1, render: () => `<img src="tiket.png" alt="ticket" class="widget-img-full" />` },
+      { id: 'rubleplane', name: 'Авиабилет', w: 1, h: 1, render: () => `<img src="rubleplane.png" alt="rubleplane" class="widget-img-full" />` },
       { id: 'last', name: 'Последняя операция', w: 3, h: 1, render: (wObj = {}) => {
-        // wObj.w, wObj.h — текущий размер виджета
         const w = wObj.w || 3;
         const h = wObj.h || 1;
-        if (w <= 1 && h <= 1) {
-          // Очень маленький: только иконка
+        const amount = '-1 958 ₽';
+        const title = 'Яндекс.Лавка';
+        const category = 'Продукты';
+        if ((w === 2 && h === 1) || (w === 1 && h === 1)) {
           return `
-            <div class="widget-last-center" style="gap:2px;">
-              <div class="last-icon" style="margin-bottom:0;">
-                <img src="yandexlavka.png" alt="yandex-lavka" />
+            <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:#f6f6f6;border-radius:18px;">
+              <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:#00bfff;border-radius:12px;">
+                <img src='yandexlavka.png' alt='yandex-lavka' style='width:28px;height:28px;object-fit:contain;border-radius:8px;' />
               </div>
+              <span style="font-size:1.08rem;font-weight:700;max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Ян...</span>
+              <span style="font-size:1.08rem;font-weight:800;">${amount}</span>
             </div>
           `;
-        } else if (w <= 2 && h <= 1) {
-          // Маленький: иконка и сумма
+        }
+        const iconSize = Math.max(32, Math.min(54, Math.floor(Math.min(w, h) * 32 + 16)));
+        const sumSize = Math.max(1.0, Math.min(1.5, 0.9 + 0.2 * (w + h)));
+        const titleSize = Math.max(1.0, Math.min(1.3, 0.9 + 0.15 * (w + h)));
+        const catSize = Math.max(0.9, Math.min(1.1, 0.8 + 0.1 * (w + h)));
+        if (w <= 1 && h <= 1) {
           return `
-            <div class="widget-last-center" style="gap:4px;">
-              <div class="last-icon" style="margin-bottom:0;">
-                <img src="yandexlavka.png" alt="yandex-lavka" />
+            <div class="widget-last-center" style="gap:2px;">
+              <div class="last-icon" style="margin-bottom:0;width:${iconSize}px;height:${iconSize}px;">
+                <img src="yandexlavka.png" alt="yandex-lavka" style="width:${iconSize-8}px;height:${iconSize-8}px;" />
               </div>
-              <div class="last-amount">-1 958 ₽</div>
             </div>
           `;
         } else if (w <= 2 && h >= 2) {
-          // Вертикальный средний: иконка, сумма, категория
           return `
             <div class="widget-last-center" style="gap:4px;">
-              <div class="last-icon">
-                <img src="yandexlavka.png" alt="yandex-lavka" />
+              <div class="last-icon" style="width:${iconSize}px;height:${iconSize}px;">
+                <img src="yandexlavka.png" alt="yandex-lavka" style="width:${iconSize-8}px;height:${iconSize-8}px;" />
               </div>
-              <div class="last-amount">-1 958 ₽</div>
-              <div class="last-category">Продукты</div>
+              <div class="last-amount" style="font-size:${sumSize}rem;">${amount}</div>
+              <div class="last-category" style="font-size:${catSize}rem;">${category}</div>
             </div>
           `;
         } else if (w <= 3 && h <= 1) {
-          // Горизонтальный средний: иконка, сумма, короткое название
           return `
             <div class="widget-last-center" style="gap:4px;">
               <div class="last-title-row">
-                <div class="last-icon" style="margin-bottom:0;">
-                  <img src="yandexlavka.png" alt="yandex-lavka" />
+                <div class="last-icon" style="margin-bottom:0;width:${iconSize}px;height:${iconSize}px;">
+                  <img src="yandexlavka.png" alt="yandex-lavka" style="width:${iconSize-8}px;height:${iconSize-8}px;" />
                 </div>
-                <div class="last-title" style="font-size:1.1rem;max-width:60px;">Яндекс...</div>
-                <div class="last-amount">-1 958 ₽</div>
+                <div class="last-title" style="font-size:${titleSize}rem;max-width:60px;">Яндекс...</div>
+                <div class="last-amount" style="font-size:${sumSize}rem;">${amount}</div>
               </div>
             </div>
           `;
         } else {
-          // Большой: всё
           return `
-            <div class="widget-last-center">
-              <div class="last-icon">
-                <img src="yandexlavka.png" alt="yandex-lavka" />
+            <div class="widget-last-center" style="gap:8px;">
+              <div class="last-icon" style="width:${iconSize}px;height:${iconSize}px;">
+                <img src="yandexlavka.png" alt="yandex-lavka" style="width:${iconSize-8}px;height:${iconSize-8}px;" />
               </div>
               <div class="last-title-row">
-                <div class="last-title">Яндекс.Лавка</div>
-                <div class="last-amount">-1 958 ₽</div>
+                <div class="last-title" style="font-size:${titleSize}rem;">${title}</div>
+                <div class="last-amount" style="font-size:${sumSize}rem;">${amount}</div>
               </div>
-              <div class="last-category">Продукты</div>
+              <div class="last-category" style="font-size:${catSize}rem;">${category}</div>
             </div>
           `;
         }
       }},
     ];
-    let userWidgets = [];
+    let userWidgets = [
+      { id: 'balance', x: 0, y: 1, w: 5, h: 2 },
+      { id: 'last', x: 0, y: 3, w: 3, h: 2 },
+      { id: 'send', x: 3, y: 3, w: 1, h: 1 },
+      { id: 'qr', x: 4, y: 3, w: 1, h: 1 },
+      { id: 'shop', x: 3, y: 4, w: 1, h: 1 },
+      { id: 'world', x: 4, y: 4, w: 1, h: 1 },
+    ];
     let editMode = false;
-
     // --- Проверка занятости ячеек ---
     function isCellFree(x, y, w, h, ignoreIdx = -1) {
       for (let i = 0; i < userWidgets.length; i++) {
@@ -1396,7 +1555,7 @@
           }
         }
       }
-      return x >= 0 && y >= 0 && x + w <= GRID_COLS && y + h <= GRID_ROWS;
+      return x >= 0 && y >= 1 && x + w <= GRID_COLS && y + h <= GRID_ROWS;
     }
     // --- Рендер виджетов ---
     function renderWidgetsGrid() {
@@ -1412,13 +1571,11 @@
         block.style.height = ((w.h || widget.h) * GRID_SIZE - 8) + 'px';
         block.style.left = (w.x * GRID_SIZE + 4) + 'px';
         block.style.top = (w.y * GRID_SIZE + 4) + 'px';
-        // Для last передаём размер
         if (widget.id === 'last') {
           block.innerHTML = widget.render(w);
         } else {
           block.innerHTML = widget.render();
         }
-        // Кнопка удаления
         if (editMode) {
           const removeBtn = document.createElement('button');
           removeBtn.className = 'widget-remove-btn';
@@ -1433,7 +1590,6 @@
           // Drag&Drop только в режиме редактирования
           let offsetX, offsetY, dragging = false, startX, startY;
           function onPointerDown(e) {
-            // Не начинать drag, если клик по resize handle
             if (e.target.classList.contains('widget-resize-handle')) return;
             dragging = true;
             block.classList.add('dragging');
@@ -1462,11 +1618,10 @@
               px = e.clientX - area.getBoundingClientRect().left - offsetX;
               py = e.clientY - area.getBoundingClientRect().top - offsetY;
             }
-            // Snap to grid
             let gx = Math.round(px / GRID_SIZE);
             let gy = Math.round(py / GRID_SIZE);
             gx = Math.max(0, Math.min(gx, GRID_COLS - (w.w || widget.w)));
-            gy = Math.max(0, Math.min(gy, GRID_ROWS - (w.h || widget.h)));
+            gy = Math.max(1, Math.min(gy, GRID_ROWS - (w.h || widget.h)));
             block.style.left = (gx * GRID_SIZE + 4) + 'px';
             block.style.top = (gy * GRID_SIZE + 4) + 'px';
           }
@@ -1484,8 +1639,7 @@
             let gx = Math.round(px / GRID_SIZE);
             let gy = Math.round(py / GRID_SIZE);
             gx = Math.max(0, Math.min(gx, GRID_COLS - (w.w || widget.w)));
-            gy = Math.max(0, Math.min(gy, GRID_ROWS - (w.h || widget.h)));
-            // Проверка на занятость
+            gy = Math.max(1, Math.min(gy, GRID_ROWS - (w.h || widget.h)));
             if (isCellFree(gx, gy, w.w || widget.w, w.h || widget.h, idx)) {
               userWidgets[idx].x = gx;
               userWidgets[idx].y = gy;
@@ -1504,7 +1658,6 @@
           }
           block.addEventListener('mousedown', onPointerDown);
           block.addEventListener('touchstart', onPointerDown, { passive: false });
-
           // --- Resize handle ---
           const resizeHandle = document.createElement('div');
           resizeHandle.className = 'widget-resize-handle';
@@ -1544,7 +1697,6 @@
             let newH = Math.max(1, Math.round(startH + dy / GRID_SIZE));
             newW = Math.min(newW, GRID_COLS - w.x);
             newH = Math.min(newH, GRID_ROWS - w.y);
-            // Проверка на пересечение
             if (isCellFree(w.x, w.y, newW, newH, idx)) {
               block.style.width = (newW * GRID_SIZE - 8) + 'px';
               block.style.height = (newH * GRID_SIZE - 8) + 'px';
@@ -1573,19 +1725,18 @@
     // --- Кнопка + и галочка ---
     function renderEditButton() {
       let btn = document.getElementById('addWidgetBtn');
-      // Удаляем старые кнопки, если есть (чтобы не было конфликтов и наложения обработчиков)
       let oldEditBtn = document.getElementById('editWidgetBtn');
       if (oldEditBtn) oldEditBtn.remove();
       let oldSmallBtn = document.getElementById('addWidgetSmallBtn');
       if (oldSmallBtn) oldSmallBtn.remove();
-      // После выхода из режима редактора убираем свечение и рамку у всех виджетов
       if (!editMode) {
         document.querySelectorAll('.widget-block-grid').forEach(el => {
           el.classList.remove('dragging');
+          el.style.boxShadow = '';
+          el.style.border = '';
         });
       }
       if (editMode) {
-        // Создаём галочку
         let editBtn = document.createElement('button');
         editBtn.id = 'editWidgetBtn';
         editBtn.className = 'edit-widget-btn';
@@ -1597,7 +1748,6 @@
           renderWidgetsGrid();
         };
         document.body.appendChild(editBtn);
-        // Создаём маленький плюсик
         let smallBtn = document.createElement('button');
         smallBtn.id = 'addWidgetSmallBtn';
         smallBtn.className = 'add-widget-small-btn';
@@ -1620,19 +1770,17 @@
       document.getElementById('widgetPickerModal').classList.add('active');
       renderWidgetPickerGrid();
     };
-    // --- Модальное окно выбора виджетов ---
     function renderWidgetPickerGrid() {
       const list = document.getElementById('widgetPickerList');
       list.innerHTML = '';
       availableWidgets.forEach(w => {
-        if (userWidgets.some(uw => uw.id === w.id)) return; // не показывать уже добавленные
+        if (userWidgets.some(uw => uw.id === w.id)) return;
         const item = document.createElement('div');
         item.className = 'widget-picker-item';
         item.textContent = w.name;
         item.onclick = () => {
-          // Найти первую свободную позицию
           let found = false;
-          for (let y = 0; y <= GRID_ROWS - w.h && !found; y++) {
+          for (let y = 1; y <= GRID_ROWS - w.h && !found; y++) {
             for (let x = 0; x <= GRID_COLS - w.w && !found; x++) {
               if (isCellFree(x, y, w.w, w.h)) {
                 userWidgets.push({ id: w.id, x, y });
@@ -1650,14 +1798,233 @@
       document.getElementById('widgetPickerModal').classList.remove('active');
       renderEditButton();
     };
-    // --- Клик вне модального окна ---
     document.getElementById('widgetPickerModal').addEventListener('click', function(e) {
       if (e.target === this) {
         this.classList.remove('active');
         renderEditButton();
       }
     });
-    // --- Инициализация ---
+    // --- Свайпы между главной и лентой ---
+    let startY = null;
+    let currentY = null;
+    let dragging = false;
+    let dragType = null;
+    const feedScreen = document.getElementById('feedScreen');
+    const mainContainer = document.getElementById('mainContainer');
+    // --- Drag-свайп вверх (открытие ленты) ---
+    mainContainer.addEventListener('touchstart', function(e) {
+      if (e.touches.length === 1) {
+        startY = e.touches[0].clientY;
+        dragging = true;
+        dragType = 'up';
+        feedScreen.style.transition = 'none';
+        feedScreen.classList.add('active-screen');
+        feedScreen.classList.remove('inactive-screen');
+        feedScreen.style.transform = 'translateX(-50%) translateY(100%)';
+        feedScreen.style.opacity = 0;
+      }
+    });
+    mainContainer.addEventListener('touchmove', function(e) {
+      if (!dragging || dragType !== 'up') return;
+      currentY = e.touches[0].clientY;
+      let delta = Math.max(0, startY - currentY);
+      let percent = Math.min(1, delta / window.innerHeight);
+      feedScreen.style.transform = `translateX(-50%) translateY(${100 - percent * 100}%)`;
+      feedScreen.style.opacity = percent;
+    });
+    mainContainer.addEventListener('touchend', function(e) {
+      if (!dragging || dragType !== 'up') return;
+      let endY = e.changedTouches[0].clientY;
+      let delta = startY - endY;
+      feedScreen.style.transition = 'transform 0.45s cubic-bezier(.77,0,.18,1), opacity 0.3s';
+      if (delta > window.innerHeight * 0.18) {
+        feedScreen.style.transform = 'translateX(-50%) translateY(0)';
+        feedScreen.style.opacity = 1;
+        setTimeout(() => { mainContainer.classList.add('blurred'); }, 300);
+      } else {
+        feedScreen.classList.remove('active-screen');
+        feedScreen.classList.add('inactive-screen');
+        feedScreen.style.transform = 'translateX(-50%) translateY(100%)';
+        feedScreen.style.opacity = 0;
+      }
+      dragging = false;
+      dragType = null;
+    });
+    // --- Drag-свайп вниз (закрытие ленты) ---
+    feedScreen.addEventListener('touchstart', function(e) {
+      if (e.touches.length === 1) {
+        startY = e.touches[0].clientY;
+        dragging = true;
+        dragType = 'down';
+        feedScreen.style.transition = 'none';
+      }
+    });
+    feedScreen.addEventListener('touchmove', function(e) {
+      if (!dragging || dragType !== 'down') return;
+      currentY = e.touches[0].clientY;
+      let delta = Math.max(0, currentY - startY);
+      let percent = Math.max(0, 1 - delta / window.innerHeight);
+      feedScreen.style.transform = `translateX(-50%) translateY(${(1 - percent) * 100}%)`;
+      feedScreen.style.opacity = percent;
+    });
+    feedScreen.addEventListener('touchend', function(e) {
+      if (!dragging || dragType !== 'down') return;
+      let endY = e.changedTouches[0].clientY;
+      let delta = endY - startY;
+      feedScreen.style.transition = 'transform 0.45s cubic-bezier(.77,0,.18,1), opacity 0.3s';
+      if (delta > window.innerHeight * 0.18) {
+        showMain();
+      } else {
+        feedScreen.classList.add('active-screen');
+        feedScreen.classList.remove('inactive-screen');
+        feedScreen.style.transform = 'translateX(-50%) translateY(0)';
+        feedScreen.style.opacity = 1;
+      }
+      dragging = false;
+      dragType = null;
+    });
+    // --- Для мыши (десктоп) ---
+    mainContainer.addEventListener('mousedown', function(e) {
+      startY = e.clientY;
+      dragging = true;
+      dragType = 'up';
+      feedScreen.style.transition = 'none';
+      feedScreen.classList.add('active-screen');
+      feedScreen.classList.remove('inactive-screen');
+      feedScreen.style.transform = 'translateX(-50%) translateY(100%)';
+      feedScreen.style.opacity = 0;
+    });
+    mainContainer.addEventListener('mousemove', function(e) {
+      if (!dragging || dragType !== 'up') return;
+      currentY = e.clientY;
+      let delta = Math.max(0, startY - currentY);
+      let percent = Math.min(1, delta / window.innerHeight);
+      feedScreen.style.transform = `translateX(-50%) translateY(${100 - percent * 100}%)`;
+      feedScreen.style.opacity = percent;
+    });
+    mainContainer.addEventListener('mouseup', function(e) {
+      if (!dragging || dragType !== 'up') return;
+      let endY = e.clientY;
+      let delta = startY - endY;
+      feedScreen.style.transition = 'transform 0.45s cubic-bezier(.77,0,.18,1), opacity 0.3s';
+      if (delta > window.innerHeight * 0.18) {
+        feedScreen.style.transform = 'translateX(-50%) translateY(0)';
+        feedScreen.style.opacity = 1;
+        setTimeout(() => { mainContainer.classList.add('blurred'); }, 300);
+      } else {
+        feedScreen.classList.remove('active-screen');
+        feedScreen.classList.add('inactive-screen');
+        feedScreen.style.transform = 'translateX(-50%) translateY(100%)';
+        feedScreen.style.opacity = 0;
+      }
+      dragging = false;
+      dragType = null;
+    });
+    feedScreen.addEventListener('mousedown', function(e) {
+      startY = e.clientY;
+      dragging = true;
+      dragType = 'down';
+      feedScreen.style.transition = 'none';
+    });
+    feedScreen.addEventListener('mousemove', function(e) {
+      if (!dragging || dragType !== 'down') return;
+      currentY = e.clientY;
+      let delta = Math.max(0, currentY - startY);
+      let percent = Math.max(0, 1 - delta / window.innerHeight);
+      feedScreen.style.transform = `translateX(-50%) translateY(${(1 - percent) * 100}%)`;
+      feedScreen.style.opacity = percent;
+    });
+    feedScreen.addEventListener('mouseup', function(e) {
+      if (!dragging || dragType !== 'down') return;
+      let endY = e.clientY;
+      let delta = endY - startY;
+      feedScreen.style.transition = 'transform 0.45s cubic-bezier(.77,0,.18,1), opacity 0.3s';
+      if (delta > window.innerHeight * 0.18) {
+        showMain();
+      } else {
+        feedScreen.classList.add('active-screen');
+        feedScreen.classList.remove('inactive-screen');
+        feedScreen.style.transform = 'translateX(-50%) translateY(0)';
+        feedScreen.style.opacity = 1;
+      }
+      dragging = false;
+      dragType = null;
+    });
+    function showMain() {
+      mainContainer.classList.add('active-screen');
+      mainContainer.classList.remove('inactive-screen');
+      mainContainer.classList.remove('blurred');
+      feedScreen.classList.remove('active-screen');
+      feedScreen.classList.add('inactive-screen');
+      feedScreen.style.transform = 'translateX(-50%) translateY(100%)';
+      feedScreen.style.opacity = 0;
+    }
+    function showFeed() {
+      mainContainer.classList.add('blurred');
+      feedScreen.classList.add('active-screen');
+      feedScreen.classList.remove('inactive-screen');
+      feedScreen.style.transform = 'translateX(-50%) translateY(0)';
+      feedScreen.style.opacity = 1;
+    }
+    // --- Лента ---
+    const feedFilters = [
+      { type: 'traty', label: 'Траты' },
+      { type: 'sovety', label: 'Советы' },
+      { type: 'nagrady', label: 'Награды' },
+      { type: 'vygoda', label: 'Выгоды' },
+      { type: 'plus', label: 'Плюс' },
+    ];
+    let activeFeedFilter = null;
+    function renderFeedFilters() {
+      const filtersElem = document.getElementById('feedFilters');
+      filtersElem.innerHTML = '';
+      feedFilters.forEach(f => {
+        const btn = document.createElement('button');
+        btn.className = 'feed-filter-btn ' + f.type + (activeFeedFilter === f.type ? ' active' : '');
+        btn.textContent = f.label;
+        btn.onclick = () => {
+          if (activeFeedFilter === f.type) {
+            activeFeedFilter = null;
+          } else {
+            activeFeedFilter = f.type;
+          }
+          renderFeedFilters();
+          renderFeedCards();
+        };
+        filtersElem.appendChild(btn);
+      });
+    }
+    const feedData = [
+      { type: 'traty', accent: '+47%', text: 'Ты потратил на кофе в этом месяце больше по сравнению с предыдущим', graph: true },
+      { type: 'sovety', emoji: '🧐', text: 'Ты часто переводишь на Сбер — порекомендуй карту Альфа и получай бонусы' },
+      { type: 'nagrady', emoji: '🏆', text: 'Выполнено: <b>«Сам себе финансист»</b><br>Нажимай и забирай награду!' },
+      { type: 'vygoda', emoji: '🤩', text: 'Супер кэшбек на «Ростикс» — сегодня только для тебя' },
+      { type: 'plus', emoji: '👑', text: 'Альфа-Плюс: ещё больше выгод и бонусов!' },
+    ];
+    function renderFeedCards() {
+      const listElem = document.getElementById('feedCardsList');
+      listElem.innerHTML = '';
+      let filtered = activeFeedFilter ? feedData.filter(d => d.type === activeFeedFilter) : feedData;
+      filtered.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'feed-card ' + item.type;
+        let content = '';
+        if (item.accent) {
+          content += `<span class='feed-card-accent'>${item.accent}</span>`;
+        }
+        if (item.emoji) {
+          content += `<span class='feed-card-emoji'>${item.emoji}</span>`;
+        }
+        content += `<span class='feed-card-content'>${item.text.replace(/\n/g, '<br>')}</span>`;
+        if (item.graph) {
+          content += `<div class='feed-card-graph'><div class='bar bar-jan'></div><div class='bar bar-feb'></div></div>`;
+        }
+        card.innerHTML = content;
+        listElem.appendChild(card);
+      });
+    }
+    renderFeedFilters();
+    renderFeedCards();
     recalcGrid();
     renderWidgetsGrid();
     renderEditButton();
