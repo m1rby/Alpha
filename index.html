@@ -533,19 +533,9 @@
       height: 44px;
       margin-bottom: 0;
       animation: bounce 1.2s infinite;
-      color: #a13cf7;
+      color: #b0b8d1;
       display: block;
     }
-    .swipe-hint-text {
-      color: #b0b8d1;
-      font-size: 1.08rem;
-      font-weight: 500;
-      letter-spacing: 0.01em;
-      opacity: 0.85;
-      margin-top: 2px;
-      animation: fadein 2s;
-      text-align: center;
-      }
     @keyframes bounce {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(12px); }
@@ -616,6 +606,361 @@
       color: #ffd600;
       filter: drop-shadow(0 2px 2px #0002);
     }
+    .widgets-area {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin: 32px 18px 0 18px;
+      min-height: 120px;
+    }
+    .widget-block {
+      background: #f6f6f6;
+      border-radius: 18px;
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      box-shadow: 0 2px 8px #e0e0e0;
+      position: relative;
+      cursor: grab;
+      user-select: none;
+      transition: box-shadow 0.2s;
+    }
+    .widget-block.dragging {
+      opacity: 0.6;
+      box-shadow: 0 8px 32px #a13cf7aa;
+      z-index: 10;
+    }
+    .widget-remove-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #e94f7c;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      transition: background 0.2s;
+    }
+    .widget-remove-btn:active {
+      background: #a13cf7;
+    }
+    .add-widget-btn {
+      position: fixed;
+      right: 32px;
+      bottom: 32px;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #b0b8d1;
+      color: #fff;
+      font-size: 2.2rem;
+      font-weight: 700;
+      border: none;
+      box-shadow: 0 4px 16px 0 #e0e0e0;
+      cursor: pointer;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .add-widget-btn:active {
+      background: #aeb4c6;
+      color: #fff;
+    }
+    .edit-widget-btn {
+      position: fixed;
+      right: 32px;
+      bottom: 32px;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #00b86b;
+      color: #fff;
+      font-size: 2.2rem;
+      font-weight: 700;
+      border: none;
+      box-shadow: 0 4px 16px 0 #e0e0e0;
+      cursor: pointer;
+      z-index: 3002;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .edit-widget-btn:active {
+      background: #00994c;
+    }
+    .add-widget-small-btn {
+      position: fixed;
+      right: 44px;
+      bottom: 108px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #b0b8d1;
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 700;
+      border: none;
+      box-shadow: 0 2px 8px 0 #e0e0e0;
+      cursor: pointer;
+      z-index: 3003;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .add-widget-small-btn:active {
+      background: #aeb4c6;
+      color: #fff;
+    }
+    .widget-picker-modal {
+      display: none;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(24,24,24,0.18);
+      z-index: 300;
+      align-items: center;
+      justify-content: center;
+    }
+    .widget-picker-modal.active {
+      display: flex;
+    }
+    .widget-picker-content {
+      background: #fff;
+      border-radius: 22px;
+      padding: 32px 24px 24px 24px;
+      min-width: 260px;
+      box-shadow: 0 8px 32px #a13cf722;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+    .widget-picker-title {
+      font-size: 1.18rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #232323;
+    }
+    .widget-picker-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+    }
+    .widget-picker-item {
+      background: #f6f6f6;
+      border-radius: 14px;
+      padding: 12px 18px;
+      font-size: 1.08rem;
+      font-weight: 600;
+      color: #232323;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-align: center;
+    }
+    .widget-picker-item:active {
+      background: #a13cf7;
+      color: #fff;
+    }
+    .close-widget-picker {
+      margin-top: 8px;
+      background: #e94f7c;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 8px 18px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .close-widget-picker:active {
+      background: #a13cf7;
+    }
+    .widgets-area-abs {
+      position: relative;
+      width: 100%;
+      min-height: 320px;
+      background: #f6f6f6;
+      border-radius: 22px;
+      margin: 32px 18px 0 18px;
+      box-shadow: 0 2px 8px #e0e0e0;
+      overflow: hidden;
+      height: 320px;
+    }
+    .widget-block-abs {
+      position: absolute;
+      min-width: 90px;
+      min-height: 56px;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 2px 8px #a13cf7aa;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 18px 12px 14px;
+      cursor: grab;
+      user-select: none;
+      z-index: 10;
+      transition: box-shadow 0.2s, opacity 0.2s;
+    }
+    .widget-block-abs.dragging {
+      opacity: 0.7;
+      box-shadow: 0 8px 32px #a13cf7cc;
+      z-index: 100;
+    }
+    .widget-remove-btn {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: #e94f7c;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      transition: background 0.2s;
+    }
+    .widget-remove-btn:active {
+      background: #a13cf7;
+    }
+    .widget-block-grid {
+      position: absolute;
+      background: #fff;
+      border-radius: 18px;
+      /* box-shadow: 0 2px 8px #a13cf7aa; */
+      /* box-shadow: none; */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: grab;
+      user-select: none;
+      z-index: 10;
+      transition: opacity 0.2s;
+      padding: 0;
+    }
+    .widget-block-grid.dragging {
+      opacity: 0.7;
+      /* box-shadow: none; */
+      z-index: 100;
+    }
+    .widget-resize-handle {
+      position: absolute;
+      right: 2px;
+      bottom: 2px;
+      width: 18px;
+      height: 18px;
+      background: rgba(161,60,247,0.12);
+      border-radius: 4px;
+      border: 1.5px solid #a13cf7;
+      cursor: nwse-resize;
+      z-index: 20;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      box-sizing: border-box;
+    }
+    .widget-resize-handle:after {
+      content: '';
+      display: block;
+      width: 10px;
+      height: 10px;
+      border-right: 2px solid #a13cf7;
+      border-bottom: 2px solid #a13cf7;
+      border-radius: 2px;
+      margin: 2px;
+    }
+    .widget-remove-btn {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: #e94f7c;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      transition: background 0.2s;
+    }
+    .widget-remove-btn:active {
+      background: #a13cf7;
+    }
+    /* Стили для оригинальных виджетов */
+    .account-main-card, .account-invest-card, .action-vert-btn, .quick-action, .last-transaction {
+      box-shadow: none;
+      margin: 0;
+    }
+    .widget-balance { 
+      width: 100%; height: 100%; background: #f6f6f6; border-radius: 22px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; box-sizing: border-box; padding: 0; 
+      transition: box-shadow 0.2s, background 0.2s;
+    }
+    .widget-balance .balance-card-img {
+      width: 60px;
+      height: 40px;
+      border-radius: 0;
+      object-fit: cover;
+      background: #e50914;
+      box-shadow: 0 2px 8px #e0e0e0;
+      margin-bottom: 10px;
+    }
+    .widget-invest { width: 120px; height: 56px; background: #edeafd; border-radius: 16px; display: flex; align-items: center; gap: 10px; padding: 12px 18px; }
+    .widget-action { width: 56px; height: 56px; background: #f6f6f6; border-radius: 18px; display: flex; align-items: center; justify-content: center; }
+    .widget-quick { width: 56px; height: 56px; background: #f6f6f6; border-radius: 18px; display: flex; align-items: center; justify-content: center; }
+    .widget-last { width: 200px; height: 56px; background: #f6f6f6; border-radius: 18px; display: flex; align-items: center; gap: 10px; padding: 12px 18px; }
+    .widget-last-center {
+      width: 100%; height: 100%; background: #f6f6f6; border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; box-sizing: border-box; padding: 0; }
+    .widget-last-center .last-icon {
+      width: 54px; height: 54px; border-radius: 14px; background: #00bfff; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;
+    }
+    .widget-last-center .last-icon img {
+      width: 40px; height: 40px; object-fit: contain; border-radius: 12px;
+    }
+    .widget-last-center .last-title-row {
+      display: flex; flex-direction: row; align-items: center; gap: 10px; justify-content: center; width: 100%;
+    }
+    .widget-last-center .last-title {
+      font-size: 1.3rem; font-weight: 800; color: #232323; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .widget-last-center .last-amount {
+      font-size: 1.3rem; font-weight: 800; color: #232323; margin-left: 8px; white-space: nowrap;
+    }
+    .widget-last-center .last-category {
+      font-size: 1.08rem; color: #7a7a7a; font-weight: 500; text-align: center;
+    }
+    .widget-img-full {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 18px;
+      background: #f6f6f6;
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -636,63 +981,23 @@
         </button>
       </div>
     </div>
-    <!-- Блок счетов и действий -->
-    <div class="accounts-actions-row">
-      <div class="accounts-block">
-        <div class="account-main-card">
-          <img src="card.png" alt="card" class="card-img" />
-          <div class="card-balance-block">
-            <div class="account-balance">98,71₽</div>
-            <div class="account-label">Текущий счёт</div>
+    <!-- Кастомизируемые виджеты -->
+    <div id="widgetsArea" class="widgets-area-grid"></div>
+    <!-- Кнопка добавления виджета -->
+    <button id="addWidgetBtn" class="add-widget-btn" title="Добавить виджет">+</button>
+    <!-- Кнопка редактирования виджетов -->
+    <button id="editWidgetBtn" class="edit-widget-btn" title="Редактировать виджеты">✔</button>
+    <!-- Модальное окно выбора виджетов -->
+    <div id="widgetPickerModal" class="widget-picker-modal">
+      <div class="widget-picker-content">
+        <div class="widget-picker-title">Выберите виджет</div>
+        <div id="widgetPickerList" class="widget-picker-list"></div>
+        <button id="closeWidgetPicker" class="close-widget-picker">Закрыть</button>
       </div>
     </div>
-        <div class="account-invest-card">
-          <img src="addcardinvest.png" alt="invest" class="invest-img" />
-          <div class="invest-info">
-            <div class="invest-balance">3000 ₽</div>
-            <div class="invest-label">На Инвесткопилку</div>
-  </div>
-    </div>
-    </div>
-      <div class="actions-col">
-        <button class="action-vert-btn" title="Отправить">
-          <img src="paperplane.png" alt="plane" class="action-img" />
-        </button>
-        <button class="action-vert-btn" title="QR-код">
-          <img src="qr.png" alt="qr" class="action-img" />
-        </button>
-    </div>
-      </div>
-    <!-- Быстрые действия -->
-    <div class="quick-actions">
-      <button class="quick-action" title="Глобус">
-        <img src="iconworld.png" alt="world" class="quick-img" />
-      </button>
-      <button class="quick-action" title="Сумка">
-        <img src="shop.png" alt="shop" class="quick-img" />
-      </button>
-      <button class="quick-action" title="Билет">
-        <img src="tiket.png" alt="ticket" class="quick-img" />
-      </button>
-      <button class="quick-action" title="Авиабилет">
-        <img src="rubleplane.png" alt="rubleplane" class="quick-img" />
-      </button>
-    </div>
-    <!-- Последняя операция -->
-    <div class="last-transaction">
-      <div class="last-transaction-icon">
-        <img src="yandexlavka.png" alt="yandex-lavka" />
-          </div>
-      <div class="last-transaction-info">
-        <div class="last-transaction-title">Яндекс.Лавка</div>
-        <div class="last-transaction-category">Продукты</div>
-        </div>
-      <div class="last-transaction-amount">-1 958 ₽</div>
-          </div>
     <div class="swipe-hint" id="swipeHint">
-      <svg class="swipe-hint-arrow" viewBox="0 0 48 48"><path d="M24 16v16M16 32l8 8 8-8" stroke="#a13cf7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-      <div class="swipe-hint-text">Свайп вверх, чтобы открыть ленту</div>
-        </div>
+      <svg class="swipe-hint-arrow" viewBox="0 0 48 48"><path d="M24 16v16M16 32l8 8 8-8" stroke="#b0b8d1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+    </div>
           </div>
   <!-- Лента -->
   <div class="screen screen-feed inactive-screen" id="feedScreen">
@@ -948,6 +1253,414 @@
       feedScreen.style.opacity = 1;
       swipeHint.style.display = 'none';
     }
+
+    // --- Кастомизируемые виджеты на всю область ---
+    let GRID_SIZE = 64;
+    let GRID_COLS = 5;
+    let GRID_ROWS = 8;
+    function recalcGrid() {
+      const area = document.getElementById('widgetsArea');
+      const w = window.innerWidth;
+      const h = window.innerHeight - 90; // высота шапки
+      GRID_SIZE = Math.max(56, Math.floor(Math.min(w / 5, h / 8)));
+      GRID_COLS = Math.floor(w / GRID_SIZE);
+      GRID_ROWS = Math.floor(h / GRID_SIZE);
+      area.style.width = w + 'px';
+      area.style.height = h + 'px';
+    }
+    window.addEventListener('resize', () => {
+      recalcGrid();
+      renderWidgetsGrid();
+    });
+    const availableWidgets = [
+      { id: 'balance', name: 'Баланс', w: 2, h: 1, render: () => `
+        <div class="widget-balance">
+          <img src="card.png" alt="card" class="balance-card-img" />
+          <div style="font-size:2.1rem;font-weight:800;color:#232323;line-height:1.1;">98,71₽</div>
+          <div style="font-size:1.18rem;color:#7a7a7a;font-weight:600;line-height:1.1;">Текущий счёт</div>
+        </div>
+      ` },
+      { id: 'invest', name: 'Инвесткопилка', w: 2, h: 1, render: (wObj = {}) => {
+        // Адаптивный виджет: крупная иконка, центрирование, масштабируемый текст
+        const w = wObj.w || 2;
+        const h = wObj.h || 1;
+        let iconSize = Math.min(w, h) > 1 ? 64 : 40;
+        let sumSize = Math.max(1.3, 1.1 + 0.3 * (w + h - 2));
+        let labelSize = Math.max(1.1, 1.0 + 0.15 * (w + h - 2));
+        return `
+          <div style="width:100%;height:100%;background:#f6f6f6;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
+            <img src="addcardinvest.png" alt="invest" style="width:${iconSize}px;height:${iconSize}px;border-radius:16px;object-fit:cover;background:#a13cf7;box-shadow:0 2px 8px #e0e0e0;" />
+            <div style="font-size:${sumSize}rem;font-weight:800;color:#232323;line-height:1.1;">3000 ₽</div>
+            <div style="font-size:${labelSize}rem;color:#7a7a7a;font-weight:600;line-height:1.1;">На Инвесткопилку</div>
+          </div>
+        `;
+      }},
+      { id: 'send', name: 'Отправить', w: 1, h: 1, render: () => `
+        <img src="paperplane.png" alt="plane" class="widget-img-full" />
+      ` },
+      { id: 'qr', name: 'QR', w: 1, h: 1, render: () => `
+        <img src="qr.png" alt="qr" class="widget-img-full" />
+      ` },
+      { id: 'world', name: 'Глобус', w: 1, h: 1, render: () => `
+        <img src="iconworld.png" alt="world" class="widget-img-full" />
+      ` },
+      { id: 'shop', name: 'Сумка', w: 1, h: 1, render: () => `
+        <img src="shop.png" alt="shop" class="widget-img-full" />
+      ` },
+      { id: 'ticket', name: 'Билет', w: 1, h: 1, render: () => `
+        <img src="tiket.png" alt="ticket" class="widget-img-full" />
+      ` },
+      { id: 'rubleplane', name: 'Авиабилет', w: 1, h: 1, render: () => `
+        <img src="rubleplane.png" alt="rubleplane" class="widget-img-full" />
+      ` },
+      { id: 'last', name: 'Последняя операция', w: 3, h: 1, render: (wObj = {}) => {
+        // wObj.w, wObj.h — текущий размер виджета
+        const w = wObj.w || 3;
+        const h = wObj.h || 1;
+        if (w <= 1 && h <= 1) {
+          // Очень маленький: только иконка
+          return `
+            <div class="widget-last-center" style="gap:2px;">
+              <div class="last-icon" style="margin-bottom:0;">
+                <img src="yandexlavka.png" alt="yandex-lavka" />
+              </div>
+            </div>
+          `;
+        } else if (w <= 2 && h <= 1) {
+          // Маленький: иконка и сумма
+          return `
+            <div class="widget-last-center" style="gap:4px;">
+              <div class="last-icon" style="margin-bottom:0;">
+                <img src="yandexlavka.png" alt="yandex-lavka" />
+              </div>
+              <div class="last-amount">-1 958 ₽</div>
+            </div>
+          `;
+        } else if (w <= 2 && h >= 2) {
+          // Вертикальный средний: иконка, сумма, категория
+          return `
+            <div class="widget-last-center" style="gap:4px;">
+              <div class="last-icon">
+                <img src="yandexlavka.png" alt="yandex-lavka" />
+              </div>
+              <div class="last-amount">-1 958 ₽</div>
+              <div class="last-category">Продукты</div>
+            </div>
+          `;
+        } else if (w <= 3 && h <= 1) {
+          // Горизонтальный средний: иконка, сумма, короткое название
+          return `
+            <div class="widget-last-center" style="gap:4px;">
+              <div class="last-title-row">
+                <div class="last-icon" style="margin-bottom:0;">
+                  <img src="yandexlavka.png" alt="yandex-lavka" />
+                </div>
+                <div class="last-title" style="font-size:1.1rem;max-width:60px;">Яндекс...</div>
+                <div class="last-amount">-1 958 ₽</div>
+              </div>
+            </div>
+          `;
+        } else {
+          // Большой: всё
+          return `
+            <div class="widget-last-center">
+              <div class="last-icon">
+                <img src="yandexlavka.png" alt="yandex-lavka" />
+              </div>
+              <div class="last-title-row">
+                <div class="last-title">Яндекс.Лавка</div>
+                <div class="last-amount">-1 958 ₽</div>
+              </div>
+              <div class="last-category">Продукты</div>
+            </div>
+          `;
+        }
+      }},
+    ];
+    let userWidgets = [];
+    let editMode = false;
+
+    // --- Проверка занятости ячеек ---
+    function isCellFree(x, y, w, h, ignoreIdx = -1) {
+      for (let i = 0; i < userWidgets.length; i++) {
+        if (i === ignoreIdx) continue;
+        const uw = userWidgets[i];
+        const aw = availableWidgets.find(w => w.id === uw.id);
+        for (let dx = 0; dx < aw.w; dx++) {
+          for (let dy = 0; dy < aw.h; dy++) {
+            for (let ddx = 0; ddx < w; ddx++) {
+              for (let ddy = 0; ddy < h; ddy++) {
+                if (uw.x + dx === x + ddx && uw.y + dy === y + ddy) return false;
+              }
+            }
+          }
+        }
+      }
+      return x >= 0 && y >= 0 && x + w <= GRID_COLS && y + h <= GRID_ROWS;
+    }
+    // --- Рендер виджетов ---
+    function renderWidgetsGrid() {
+      recalcGrid();
+      const area = document.getElementById('widgetsArea');
+      area.innerHTML = '';
+      userWidgets.forEach((w, idx) => {
+        const widget = availableWidgets.find(aw => aw.id === w.id);
+        if (!widget) return;
+        const block = document.createElement('div');
+        block.className = 'widget-block-grid';
+        block.style.width = ((w.w || widget.w) * GRID_SIZE - 8) + 'px';
+        block.style.height = ((w.h || widget.h) * GRID_SIZE - 8) + 'px';
+        block.style.left = (w.x * GRID_SIZE + 4) + 'px';
+        block.style.top = (w.y * GRID_SIZE + 4) + 'px';
+        // Для last передаём размер
+        if (widget.id === 'last') {
+          block.innerHTML = widget.render(w);
+        } else {
+          block.innerHTML = widget.render();
+        }
+        // Кнопка удаления
+        if (editMode) {
+          const removeBtn = document.createElement('button');
+          removeBtn.className = 'widget-remove-btn';
+          removeBtn.innerHTML = '×';
+          removeBtn.title = 'Удалить';
+          removeBtn.onclick = (e) => {
+            e.stopPropagation();
+            userWidgets.splice(idx, 1);
+            renderWidgetsGrid();
+          };
+          block.appendChild(removeBtn);
+          // Drag&Drop только в режиме редактирования
+          let offsetX, offsetY, dragging = false, startX, startY;
+          function onPointerDown(e) {
+            // Не начинать drag, если клик по resize handle
+            if (e.target.classList.contains('widget-resize-handle')) return;
+            dragging = true;
+            block.classList.add('dragging');
+            const rect = block.getBoundingClientRect();
+            if (e.touches) {
+              offsetX = e.touches[0].clientX - rect.left;
+              offsetY = e.touches[0].clientY - rect.top;
+              document.addEventListener('touchmove', onPointerMove, { passive: false });
+              document.addEventListener('touchend', onPointerUp);
+            } else {
+              offsetX = e.clientX - rect.left;
+              offsetY = e.clientY - rect.top;
+              document.addEventListener('mousemove', onPointerMove);
+              document.addEventListener('mouseup', onPointerUp);
+            }
+            startX = w.x;
+            startY = w.y;
+          }
+          function onPointerMove(e) {
+            if (!dragging) return;
+            let px, py;
+            if (e.touches) {
+              px = e.touches[0].clientX - area.getBoundingClientRect().left - offsetX;
+              py = e.touches[0].clientY - area.getBoundingClientRect().top - offsetY;
+            } else {
+              px = e.clientX - area.getBoundingClientRect().left - offsetX;
+              py = e.clientY - area.getBoundingClientRect().top - offsetY;
+            }
+            // Snap to grid
+            let gx = Math.round(px / GRID_SIZE);
+            let gy = Math.round(py / GRID_SIZE);
+            gx = Math.max(0, Math.min(gx, GRID_COLS - (w.w || widget.w)));
+            gy = Math.max(0, Math.min(gy, GRID_ROWS - (w.h || widget.h)));
+            block.style.left = (gx * GRID_SIZE + 4) + 'px';
+            block.style.top = (gy * GRID_SIZE + 4) + 'px';
+          }
+          function onPointerUp(e) {
+            dragging = false;
+            block.classList.remove('dragging');
+            let px, py;
+            if (e.changedTouches) {
+              px = e.changedTouches[0].clientX - area.getBoundingClientRect().left - offsetX;
+              py = e.changedTouches[0].clientY - area.getBoundingClientRect().top - offsetY;
+            } else {
+              px = (e.clientX || 0) - area.getBoundingClientRect().left - offsetX;
+              py = (e.clientY || 0) - area.getBoundingClientRect().top - offsetY;
+            }
+            let gx = Math.round(px / GRID_SIZE);
+            let gy = Math.round(py / GRID_SIZE);
+            gx = Math.max(0, Math.min(gx, GRID_COLS - (w.w || widget.w)));
+            gy = Math.max(0, Math.min(gy, GRID_ROWS - (w.h || widget.h)));
+            // Проверка на занятость
+            if (isCellFree(gx, gy, w.w || widget.w, w.h || widget.h, idx)) {
+              userWidgets[idx].x = gx;
+              userWidgets[idx].y = gy;
+            } else {
+              userWidgets[idx].x = startX;
+              userWidgets[idx].y = startY;
+            }
+            renderWidgetsGrid();
+            if (e.touches) {
+              document.removeEventListener('touchmove', onPointerMove);
+              document.removeEventListener('touchend', onPointerUp);
+            } else {
+              document.removeEventListener('mousemove', onPointerMove);
+              document.removeEventListener('mouseup', onPointerUp);
+            }
+          }
+          block.addEventListener('mousedown', onPointerDown);
+          block.addEventListener('touchstart', onPointerDown, { passive: false });
+
+          // --- Resize handle ---
+          const resizeHandle = document.createElement('div');
+          resizeHandle.className = 'widget-resize-handle';
+          block.appendChild(resizeHandle);
+          let resizing = false, startW, startH, startMouseX, startMouseY;
+          function onResizeDown(e) {
+            e.stopPropagation();
+            resizing = true;
+            block.classList.add('dragging');
+            startW = w.w || widget.w;
+            startH = w.h || widget.h;
+            if (e.touches) {
+              startMouseX = e.touches[0].clientX;
+              startMouseY = e.touches[0].clientY;
+              document.addEventListener('touchmove', onResizeMove, { passive: false });
+              document.addEventListener('touchend', onResizeUp);
+            } else {
+              startMouseX = e.clientX;
+              startMouseY = e.clientY;
+              document.addEventListener('mousemove', onResizeMove);
+              document.addEventListener('mouseup', onResizeUp);
+            }
+          }
+          function onResizeMove(e) {
+            if (!resizing) return;
+            let mouseX, mouseY;
+            if (e.touches) {
+              mouseX = e.touches[0].clientX;
+              mouseY = e.touches[0].clientY;
+            } else {
+              mouseX = e.clientX;
+              mouseY = e.clientY;
+            }
+            let dx = mouseX - startMouseX;
+            let dy = mouseY - startMouseY;
+            let newW = Math.max(1, Math.round(startW + dx / GRID_SIZE));
+            let newH = Math.max(1, Math.round(startH + dy / GRID_SIZE));
+            newW = Math.min(newW, GRID_COLS - w.x);
+            newH = Math.min(newH, GRID_ROWS - w.y);
+            // Проверка на пересечение
+            if (isCellFree(w.x, w.y, newW, newH, idx)) {
+              block.style.width = (newW * GRID_SIZE - 8) + 'px';
+              block.style.height = (newH * GRID_SIZE - 8) + 'px';
+              userWidgets[idx].w = newW;
+              userWidgets[idx].h = newH;
+            }
+          }
+          function onResizeUp(e) {
+            resizing = false;
+            block.classList.remove('dragging');
+            renderWidgetsGrid();
+            if (e.touches) {
+              document.removeEventListener('touchmove', onResizeMove);
+              document.removeEventListener('touchend', onResizeUp);
+            } else {
+              document.removeEventListener('mousemove', onResizeMove);
+              document.removeEventListener('mouseup', onResizeUp);
+            }
+          }
+          resizeHandle.addEventListener('mousedown', onResizeDown);
+          resizeHandle.addEventListener('touchstart', onResizeDown, { passive: false });
+        }
+        area.appendChild(block);
+      });
+    }
+    // --- Кнопка + и галочка ---
+    function renderEditButton() {
+      let btn = document.getElementById('addWidgetBtn');
+      // Удаляем старые кнопки, если есть (чтобы не было конфликтов и наложения обработчиков)
+      let oldEditBtn = document.getElementById('editWidgetBtn');
+      if (oldEditBtn) oldEditBtn.remove();
+      let oldSmallBtn = document.getElementById('addWidgetSmallBtn');
+      if (oldSmallBtn) oldSmallBtn.remove();
+      // После выхода из режима редактора убираем свечение и рамку у всех виджетов
+      if (!editMode) {
+        document.querySelectorAll('.widget-block-grid').forEach(el => {
+          el.classList.remove('dragging');
+        });
+      }
+      if (editMode) {
+        // Создаём галочку
+        let editBtn = document.createElement('button');
+        editBtn.id = 'editWidgetBtn';
+        editBtn.className = 'edit-widget-btn';
+        editBtn.innerHTML = '✔';
+        editBtn.title = 'Завершить редактирование';
+        editBtn.onclick = () => {
+          editMode = false;
+          renderEditButton();
+          renderWidgetsGrid();
+        };
+        document.body.appendChild(editBtn);
+        // Создаём маленький плюсик
+        let smallBtn = document.createElement('button');
+        smallBtn.id = 'addWidgetSmallBtn';
+        smallBtn.className = 'add-widget-small-btn';
+        smallBtn.innerHTML = '+';
+        smallBtn.title = 'Добавить виджет';
+        smallBtn.onclick = () => {
+          document.getElementById('widgetPickerModal').classList.add('active');
+          renderWidgetPickerGrid();
+        };
+        document.body.appendChild(smallBtn);
+        if (btn) btn.style.display = 'none';
+      } else {
+        if (btn) btn.style.display = 'flex';
+      }
+    }
+    document.getElementById('addWidgetBtn').onclick = () => {
+      editMode = true;
+      renderEditButton();
+      renderWidgetsGrid();
+      document.getElementById('widgetPickerModal').classList.add('active');
+      renderWidgetPickerGrid();
+    };
+    // --- Модальное окно выбора виджетов ---
+    function renderWidgetPickerGrid() {
+      const list = document.getElementById('widgetPickerList');
+      list.innerHTML = '';
+      availableWidgets.forEach(w => {
+        if (userWidgets.some(uw => uw.id === w.id)) return; // не показывать уже добавленные
+        const item = document.createElement('div');
+        item.className = 'widget-picker-item';
+        item.textContent = w.name;
+        item.onclick = () => {
+          // Найти первую свободную позицию
+          let found = false;
+          for (let y = 0; y <= GRID_ROWS - w.h && !found; y++) {
+            for (let x = 0; x <= GRID_COLS - w.w && !found; x++) {
+              if (isCellFree(x, y, w.w, w.h)) {
+                userWidgets.push({ id: w.id, x, y });
+                found = true;
+              }
+            }
+          }
+          document.getElementById('widgetPickerModal').classList.remove('active');
+          renderWidgetsGrid();
+        };
+        list.appendChild(item);
+      });
+    }
+    document.getElementById('closeWidgetPicker').onclick = () => {
+      document.getElementById('widgetPickerModal').classList.remove('active');
+      renderEditButton();
+    };
+    // --- Клик вне модального окна ---
+    document.getElementById('widgetPickerModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        this.classList.remove('active');
+        renderEditButton();
+      }
+    });
+    // --- Инициализация ---
+    recalcGrid();
+    renderWidgetsGrid();
+    renderEditButton();
   </script>
 </body>
 </html> 
