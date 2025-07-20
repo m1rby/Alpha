@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AlphaYOU</title>
+  <title>AlfaYOU</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="icon.png">
   <style>
     body {
       background: #fff;
@@ -1234,12 +1235,42 @@
           </div>
         `;
       }},
-      { id: 'send', name: 'Отправить', w: 1, h: 1, render: () => `<img src="paperplane.png" alt="plane" class="widget-img-full" style="width:32px;height:32px;" />` },
-      { id: 'qr', name: 'QR', w: 1, h: 1, render: () => `<img src="qr.png" alt="qr" class="widget-img-full" style="width:32px;height:32px;" />` },
-      { id: 'world', name: 'Глобус', w: 1, h: 1, render: () => `<img src="iconworld.png" alt="world" class="widget-img-full" style="width:32px;height:32px;" />` },
-      { id: 'shop', name: 'Сумка', w: 1, h: 1, render: () => `<img src="shop.png" alt="shop" class="widget-img-full" style="width:32px;height:32px;" />` },
-      { id: 'ticket', name: 'Билет', w: 1, h: 1, render: () => `<img src="tiket.png" alt="ticket" class="widget-img-full" style="width:32px;height:32px;" />` },
-      { id: 'rubleplane', name: 'Авиабилет', w: 1, h: 1, render: () => `<img src="rubleplane.png" alt="rubleplane" class="widget-img-full" style="width:32px;height:32px;" />` },
+      { id: 'send', name: 'Отправить', w: 1, h: 1, render: (wObj = {}) => {
+        const w = wObj.w || 1;
+        const h = wObj.h || 1;
+        const iconSize = Math.max(24, Math.min(48, Math.min(w, h) * 32));
+        return `<img src="paperplane.png" alt="plane" class="widget-img-full" style="width:${iconSize}px;height:${iconSize}px;" />`;
+      } },
+      { id: 'qr', name: 'QR', w: 1, h: 1, render: (wObj = {}) => {
+        const w = wObj.w || 1;
+        const h = wObj.h || 1;
+        const iconSize = Math.max(24, Math.min(48, Math.min(w, h) * 32));
+        return `<img src="qr.png" alt="qr" class="widget-img-full" style="width:${iconSize}px;height:${iconSize}px;" />`;
+      } },
+      { id: 'world', name: 'Глобус', w: 1, h: 1, render: (wObj = {}) => {
+        const w = wObj.w || 1;
+        const h = wObj.h || 1;
+        const iconSize = Math.max(24, Math.min(48, Math.min(w, h) * 32));
+        return `<img src="iconworld.png" alt="world" class="widget-img-full" style="width:${iconSize}px;height:${iconSize}px;" />`;
+      } },
+      { id: 'shop', name: 'Сумка', w: 1, h: 1, render: (wObj = {}) => {
+        const w = wObj.w || 1;
+        const h = wObj.h || 1;
+        const iconSize = Math.max(24, Math.min(48, Math.min(w, h) * 32));
+        return `<img src="shop.png" alt="shop" class="widget-img-full" style="width:${iconSize}px;height:${iconSize}px;" />`;
+      } },
+      { id: 'ticket', name: 'Билет', w: 1, h: 1, render: (wObj = {}) => {
+        const w = wObj.w || 1;
+        const h = wObj.h || 1;
+        const iconSize = Math.max(24, Math.min(48, Math.min(w, h) * 32));
+        return `<img src="tiket.png" alt="ticket" class="widget-img-full" style="width:${iconSize}px;height:${iconSize}px;" />`;
+      } },
+      { id: 'rubleplane', name: 'Авиабилет', w: 1, h: 1, render: (wObj = {}) => {
+        const w = wObj.w || 1;
+        const h = wObj.h || 1;
+        const iconSize = Math.max(24, Math.min(48, Math.min(w, h) * 32));
+        return `<img src="rubleplane.png" alt="rubleplane" class="widget-img-full" style="width:${iconSize}px;height:${iconSize}px;" />`;
+      } },
       { id: 'last', name: 'Последняя операция', w: 3, h: 1, render: (wObj = {}) => {
         const w = wObj.w || 3;
         const h = wObj.h || 1;
