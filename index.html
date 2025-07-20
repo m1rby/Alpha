@@ -342,7 +342,7 @@
       display: block;
       width: 90%;
       height: 5px;
-      background: #a084f7;
+      background: #e94f7c;
       border-radius: 2px;
       margin-top: 2px;
     }
@@ -1587,6 +1587,8 @@
     let dragging = false;
     let dragType = null;
     let wasFeedAtTop = false;
+    let swipeCancelled = false;
+    let initialFeedScrollTop = 0;
     const feedScreen = document.getElementById('feedScreen');
     const mainContainer = document.getElementById('mainContainer');
     // --- Drag-свайп вверх (открытие ленты) ---
@@ -1631,12 +1633,15 @@
     // --- Drag-свайп вниз (закрытие ленты) ---
     feedScreen.addEventListener('touchstart', function(e) {
       if (e.touches.length === 1) {
-        startY = e.touches[0].clientY;
-        dragging = true;
-        dragType = 'down';
-        feedScreen.style.transition = 'none';
         const feedCardsList = document.getElementById('feedCardsList');
-        wasFeedAtTop = feedCardsList.scrollTop === 0;
+        if (feedCardsList.scrollTop === 0) {
+          startY = e.touches[0].clientY;
+          dragging = true;
+          dragType = 'down';
+          feedScreen.style.transition = 'none';
+        } else {
+          dragging = false;
+        }
       }
     });
     feedScreen.addEventListener('touchmove', function(e) {
@@ -1652,8 +1657,7 @@
       let endY = e.changedTouches[0].clientY;
       let delta = endY - startY;
       feedScreen.style.transition = 'transform 0.45s cubic-bezier(.77,0,.18,1), opacity 0.3s';
-      const feedCardsList = document.getElementById('feedCardsList');
-      if (delta > window.innerHeight * 0.18 && wasFeedAtTop && feedCardsList.scrollTop === 0) {
+      if (delta > window.innerHeight * 0.18) {
         showMain();
       } else {
         feedScreen.classList.add('active-screen');
@@ -1702,12 +1706,15 @@
       dragType = null;
     });
     feedScreen.addEventListener('mousedown', function(e) {
-      startY = e.clientY;
-      dragging = true;
-      dragType = 'down';
-      feedScreen.style.transition = 'none';
       const feedCardsList = document.getElementById('feedCardsList');
-      wasFeedAtTop = feedCardsList.scrollTop === 0;
+      if (feedCardsList.scrollTop === 0) {
+        startY = e.clientY;
+        dragging = true;
+        dragType = 'down';
+        feedScreen.style.transition = 'none';
+      } else {
+        dragging = false;
+      }
     });
     feedScreen.addEventListener('mousemove', function(e) {
       if (!dragging || dragType !== 'down') return;
@@ -1722,8 +1729,7 @@
       let endY = e.clientY;
       let delta = endY - startY;
       feedScreen.style.transition = 'transform 0.45s cubic-bezier(.77,0,.18,1), opacity 0.3s';
-      const feedCardsList = document.getElementById('feedCardsList');
-      if (delta > window.innerHeight * 0.18 && wasFeedAtTop && feedCardsList.scrollTop === 0) {
+      if (delta > window.innerHeight * 0.18) {
         showMain();
       } else {
         feedScreen.classList.add('active-screen');
@@ -1784,10 +1790,14 @@
       // Данные для карточек
       const feedData = [
         { type: 'traty', section: 'Траты', content: `
-          <div class="feed-card-sovety">
-            <div class="sovety-icon">💸</div>
-            <div class="sovety-text">Ты потратил на кофе в этом месяце больше по сравнению с предыдущим</div>
+         <div class="feed-card-7000">
+            
+            <div class="feed-card-7000-content">
+              <span style="font-size:1.08rem;font-weight:600;color:#232323;">Ты потратил на кофе в этом месяце больше по сравнению с предыдущим</span>
+            </div>
+            <img src="graf.png" alt="7000" />
           </div>
+          
         ` },
         { type: 'sovety', section: 'Советы', content: `
           <div class="feed-card-7000">
